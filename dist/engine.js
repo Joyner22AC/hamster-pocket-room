@@ -156,7 +156,7 @@ export class HamsterGame {
   }
   update(dt, date = new Date()) {
     const s = this.s; dt = clamp(dt, 0, 1); s.time += dt;
-    const wantsSleep = s.forcedSleep || isSleepTime(date, s.sleepStart, s.sleepEnd) || s.energy < 6;
+    const wantsSleep = s.forcedSleep || isSleepTime(date, s.sleepStart, s.sleepEnd) || s.energy < 6 || (s.mode === 'sleeping' && s.energy < 45);
     if (s.mode === 'carried') return;
     if (wantsSleep && s.time >= s.awakeUntil) {
       if (s.mode !== 'sleeping') this.sleep();

@@ -25,6 +25,11 @@ test('feeding restores both hunger and energy; tired hamster cannot start runnin
   assert.equal(g.act('wheel'), false); g.act('feed'); assert.equal(g.s.energy, 24); assert.equal(g.s.hunger, 42);
   tick(g, 4); assert.equal(g.act('wheel'), true);
 });
+test('an exhausted wheel runner keeps sleeping to recover instead of waking immediately', () => {
+  const s = freshState(); s.energy = 15; const g = new HamsterGame(s);
+  g.act('wheel'); tick(g, 7); assert.equal(g.s.mode, 'sleeping');
+  const energy = g.s.energy; tick(g, 3); assert.equal(g.s.mode, 'sleeping'); assert.ok(g.s.energy > energy);
+});
 test('moving a stash preserves remembered position; failed search cries; returning seed is found', () => {
   const g = new HamsterGame(freshState(), () => .5); g.act('stash'); tick(g, 5);
   const original = { ...g.s.memory }; g.moveStash(.88, .85);
@@ -36,6 +41,7 @@ test('save restores progress without stale simulation timers and sanitizes corru
   const g = new HamsterGame(); g.act('feed'); g.act('stash');
   const s = restoreState(saveSnapshot(g.s)); assert.equal(s.totalFeeds, 1); assert.ok(s.stash); assert.equal(s.time, 0);
   assert.equal(s.mode, 'idle'); assert.deepEqual(s.memory, g.s.memory);
+  assert.equal(restoreState({ ...saveSnapshot(g.s), x: ZONES.house.x, y: ZONES.house.y }).y, ZONES.house.y);
   const bad = restoreState({ version: 1, energy: NaN, hunger: -200, x: Infinity, name: '<x>\u0000', seeds: [{ id: 'a', x: NaN, y: 1 }] });
   assert.equal(bad.energy, 82); assert.equal(bad.hunger, 0); assert.equal(bad.x, .49); assert.equal(bad.name, 'x'); assert.deepEqual(bad.seeds, []);
 });
