@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#b3e2ef">
+  <meta name="description" content="捧起一颗软乎乎的小仓鼠，喂瓜子、跑滚轮、发现它的生活小秘密。">
+  <title>团团的小笼子 · 仓鼠小游戏</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🐹%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" as="image" href="assets/room.webp">
+</head>
+<body>
+<main class="game-shell">
+  <header class="page-header">
+    <div class="wordmark"><span class="brand-flower" aria-hidden="true">✿</span><h1 id="room-title">团团的小笼子</h1><span class="edition">初代 · 01</span></div>
+    <button class="utility-button" id="settings-button" aria-label="打开仓鼠设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm8 4-2-1 .2-2.3-2.1-1.2-1.8 1.2L12 7l-2.3 1.7-1.8-1.2-2.1 1.2L6 11l-2 1 2 1-.2 2.3 2.1 1.2 1.8-1.2L12 17l2.3-1.7 1.8 1.2 2.1-1.2L18 13l2-1Z"/></svg><span>设置</span></button>
+  </header>
+
+  <section class="console" aria-label="仓鼠游戏">
+    <div class="profile-screen">
+      <div class="pet-profile"><canvas id="portrait" width="96" height="96" aria-hidden="true"></canvas><div><strong id="pet-name">团团</strong><span id="mode-label">正在发呆</span></div></div>
+      <div class="stat"><span>体力 <b id="energy-value">82</b></span><progress id="energy" max="100" value="82" aria-label="体力"></progress></div>
+      <div class="stat"><span>饱腹 <b id="hunger-value">74</b></span><progress id="hunger" max="100" value="74" aria-label="饱腹"></progress></div>
+      <div class="stat"><span>心情 <b id="mood-value">84</b></span><progress id="mood" max="100" value="84" aria-label="心情"></progress></div>
+      <button class="sound-button" id="sound-button" aria-label="开启声音" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm5 4 5 6m0-6-5 6"/></svg></button>
+    </div>
+
+    <div class="screen-frame">
+      <div class="play-surface" id="play-surface">
+        <canvas id="room" width="960" height="640" tabindex="0" aria-label="仓鼠笼子。拖动仓鼠移动，放在滚轮上跑步、放到小屋睡觉。点击仓鼠抚摸；也可以使用下方按钮。"></canvas>
+        <div class="screen-tag"><span aria-hidden="true">✿</span> <span id="room-clock">小仓鼠的家</span></div>
+        <div class="bubble" id="bubble" aria-hidden="true" hidden></div>
+        <div class="load-screen" id="load-screen"><span class="loading-flower" aria-hidden="true">✿</span><strong>小仓鼠正在探出脑袋…</strong><span>铺好木屑，马上就来</span></div>
+        <div class="first-hint" id="first-hint">按住小仓鼠，轻轻捧起来 <span aria-hidden="true">↗</span></div>
+      </div>
+    </div>
+
+    <div class="activity-strip"><span class="activity-flower" aria-hidden="true">✿</span><p id="activity" role="status" aria-live="polite">你好呀，来陪团团玩一会儿。</p><span class="save-status" id="save-status">自动存档</span></div>
+
+    <nav class="action-bar" aria-label="照顾仓鼠">
+      <button data-action="feed" class="action-button feed"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8 9 6 17 10 24c2 4 10 4 12 0 4-7 2-15-6-21Z"/><path d="M16 8v16m-5-13 2 11m8-11-2 11"/></svg><span>喂瓜子</span><kbd>1</kbd></button>
+      <button data-action="pet" class="action-button pet"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M11 25 5 17c-2-3 1-5 3-3l3 3V7c0-3 4-3 4 0v7-9c0-3 4-3 4 0v9-7c0-3 4-3 4 0v9-5c0-3 4-3 4 0v8c0 8-7 11-13 9Z"/></svg><span>摸摸它</span><kbd>2</kbd></button>
+      <button data-action="wheel" class="action-button wheel"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="10"/><circle cx="16" cy="13" r="2"/><path d="M16 3v8m10 2h-8m-2 2v8m-10-10h8m-3 9-3 7h16l-3-7"/></svg><span>跑滚轮</span><kbd>3</kbd></button>
+      <button data-action="sleep" class="action-button sleep"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M23 21A12 12 0 0 1 11 5a12 12 0 1 0 12 16Z"/><path d="m23 3 1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z"/></svg><span id="sleep-button-label">睡一觉</span><kbd>4</kbd></button>
+      <button data-action="shape" class="action-button shape"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 11a4 4 0 1 1 5-6m6 0a4 4 0 1 1 5 6M5 21c0-10 22-10 22 0 0 8-22 8-22 0Z"/><path d="M12 20v1m8-1v1m-6 3 2 1 2-1"/></svg><span>变鼠饼</span><kbd>5</kbd></button>
+      <button data-action="stash" class="action-button stash"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m5 12 11-6 11 6-11 6-11-6Zm0 0v13l11 5 11-5V12M16 18v12M12 4l4-3 4 3"/></svg><span>藏一颗</span><kbd>6</kbd></button>
+    </nav>
+  </section>
+
+  <footer class="game-footer"><p>拖动仓鼠去滚轮或小窝 · 木屑里的小鼓包藏着秘密</p><span>给它一点时间，会有小惊喜</span></footer>
+  <noscript>请开启浏览器 JavaScript，才能和小仓鼠一起玩。</noscript>
+</main>
+
+<dialog id="settings-dialog" class="game-dialog">
+  <form id="settings-form"><div class="dialog-title"><h2>照顾你的小仓鼠</h2><button type="button" class="close-button" data-close aria-label="关闭设置">×</button></div>
+    <label>它的名字<input name="name" id="name-input" maxlength="12" required autocomplete="off"></label>
+    <fieldset><legend>每天睡觉的时间</legend><div class="time-fields"><label>开始睡觉<input type="time" name="sleepStart" id="sleep-start" required></label><span>—</span><label>睡醒时间<input type="time" name="sleepEnd" id="sleep-end" required></label></div><p>睡觉时也能捧起来；约十秒不互动，它会继续睡。开始和结束相同表示不设固定睡眠。</p></fieldset>
+    <p class="storage-note">进度保存在这台设备的浏览器里。</p><button type="submit" class="primary-button">好啦，继续玩</button>
+  </form>
+</dialog>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

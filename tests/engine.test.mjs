@@ -1,0 +1,45 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { HamsterGame, freshState, restoreState, saveSnapshot, isSleepTime, ZONES } from '../dist/engine.js';
+const night = new Date(2026, 8, 14, 23, 0);
+const tick = (g, n, date = night) => { for (let i = 0; i < n * 10; i++) g.update(.1, date); };
+
+test('sleep schedule supports daytime, overnight, and equal endpoints', () => {
+  assert.equal(isSleepTime(night, '22:00', '06:00'), true);
+  assert.equal(isSleepTime(night, '06:00', '18:00'), false);
+  assert.equal(isSleepTime(night, '06:00', '06:00'), false);
+  assert.equal(isSleepTime(new Date(2026, 8, 14, 6), '06:00', '18:00'), true);
+});
+test('drag wakes a sleeping hamster; ten idle seconds return it to sleep', () => {
+  const g = new HamsterGame(); g.act('sleep'); assert.equal(g.s.mode, 'sleeping');
+  g.pickUp(); assert.equal(g.s.mode, 'carried'); g.drop(.5, .75);
+  tick(g, 9); assert.notEqual(g.s.mode, 'sleeping'); tick(g, 1.2); assert.equal(g.s.mode, 'sleeping');
+});
+test('sleepy hamster dragged onto wheel runs, then sleeps inside wheel', () => {
+  const g = new HamsterGame(); g.act('sleep'); g.pickUp(); g.drop(ZONES.wheel.x, ZONES.wheel.y);
+  assert.equal(g.s.mode, 'running'); tick(g, 10.2);
+  assert.equal(g.s.mode, 'sleeping'); assert.ok(g.s.discoveries.includes('wheel-nap'));
+});
+test('feeding restores both hunger and energy; tired hamster cannot start running', () => {
+  const s = freshState(); s.energy = 8; s.hunger = 20; const g = new HamsterGame(s);
+  assert.equal(g.act('wheel'), false); g.act('feed'); assert.equal(g.s.energy, 24); assert.equal(g.s.hunger, 42);
+  tick(g, 4); assert.equal(g.act('wheel'), true);
+});
+test('moving a stash preserves remembered position; failed search cries; returning seed is found', () => {
+  const g = new HamsterGame(freshState(), () => .5); g.act('stash'); tick(g, 5);
+  const original = { ...g.s.memory }; g.moveStash(.88, .85);
+  assert.deepEqual(g.s.memory, original); tick(g, 35);
+  assert.equal(g.s.mode, 'crying'); g.moveStash(g.s.x, g.s.y); tick(g, 1);
+  assert.equal(g.s.stash, null); assert.ok(g.s.discoveries.includes('found'));
+});
+test('save restores progress without stale simulation timers and sanitizes corrupt data', () => {
+  const g = new HamsterGame(); g.act('feed'); g.act('stash');
+  const s = restoreState(saveSnapshot(g.s)); assert.equal(s.totalFeeds, 1); assert.ok(s.stash); assert.equal(s.time, 0);
+  assert.equal(s.mode, 'idle'); assert.deepEqual(s.memory, g.s.memory);
+  const bad = restoreState({ version: 1, energy: NaN, hunger: -200, x: Infinity, name: '<x>\u0000', seeds: [{ id: 'a', x: NaN, y: 1 }] });
+  assert.equal(bad.energy, 82); assert.equal(bad.hunger, 0); assert.equal(bad.x, .49); assert.equal(bad.name, 'x'); assert.deepEqual(bad.seeds, []);
+});
+test('stats stay bounded during long play and held hamster stays awake', () => {
+  const g = new HamsterGame(); g.pickUp(); tick(g, 30); assert.equal(g.s.mode, 'carried'); g.drop(.5, .75);
+  tick(g, 1800); for (const k of ['energy', 'mood', 'hunger']) assert.ok(g.s[k] >= 0 && g.s[k] <= 100);
+});
