@@ -124,23 +124,58 @@ function render(dt) {
     ctx.fillText('跑一跑', ZONES.wheel.x * W, ZONES.wheel.y * H - 109); ctx.fillText('睡一觉', ZONES.house.x * W, ZONES.house.y * H - 73); ctx.restore();
   }
   drawStash();
-  const isWheel = s.mode === 'running' || (s.mode === 'sleeping' && Math.hypot(s.x - ZONES.wheel.x, s.y - ZONES.wheel.y) < .04);
-  const px = s.x * W, py = s.y * H;
-  ctx.save(); ctx.fillStyle = '#6b68412a'; ctx.beginPath(); ctx.ellipse(px, py + 2, isWheel ? 38 : 45, 9, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  const wheelBlend = s.motion?.wheelBlend ?? 0;
+  const sleepBlend = s.motion?.sleepBlend ?? (s.mode === 'sleeping' ? 1 : 0);
+  const isWheel = wheelBlend > .5 || s.mode === 'running' || (s.mode === 'sleeping' && Math.hypot(s.x - ZONES.wheel.x, s.y - ZONES.wheel.y) < .04);
+  const lift = s.motion?.lift ?? (s.mode === 'carried' ? 1 : 0);
+  const px = s.x * W, py = s.y * H, bodyY = py - lift * 14 + sleepBlend * 2;
+  ctx.save(); ctx.fillStyle = '#6b68412a'; ctx.globalAlpha = 1 - lift * .45; ctx.beginPath(); ctx.ellipse(px, py + 2, isWheel ? 38 : 45 - lift * 4, 9 - lift * 2, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
   let bounce = 0, angle = 0;
-  if (s.mode === 'running') { bounce = Math.sin(s.time * 21) * 3; angle = Math.sin(s.time * 12) * .04; }
-  else if (s.mode === 'walking' || s.mode === 'hiding') { bounce = Math.sin(s.time * 14) * 3; angle = Math.sin(s.time * 7) * .035; }
-  else if (s.mode === 'eating') bounce = Math.sin(s.time * 14) * 1.4;
-  else if (s.mode === 'sleeping') bounce = Math.sin(s.time * 2) * 1.3;
-  else if (s.mode === 'crying') angle = Math.sin(s.time * 15) * .035;
+  const stride = s.motion?.stride ?? s.time * 14;
+  const activity = s.motion?.activityPhase ?? s.time;
+  const sniffing = s.mode === 'searching' && !s.target;
+  const burying = s.mode === 'hiding' && !s.target;
+  if (s.mode === 'running') {
+    const runRate = Math.max(.16, (s.motion?.wheelSpeed ?? 5) / 5);
+    bounce = Math.sin(s.time * (8 + runRate * 13)) * 2.7 * runRate;
+    angle = Math.sin(s.time * (6 + runRate * 7)) * .04 * runRate;
+  } else if (sniffing) {
+    bounce = -Math.abs(Math.sin(activity * 8)) * 1.1;
+    angle = Math.sin(activity * 5) * .055;
+  } else if (burying) {
+    bounce = -Math.abs(Math.sin(activity * 12)) * 1.8;
+    angle = Math.sin(activity * 12) * .03;
+  } else if (s.mode === 'walking' || s.mode === 'hiding' || s.mode === 'searching') {
+    bounce = -Math.abs(Math.sin(stride)) * 3.2;
+    angle = Math.sin(stride) * .045;
+  } else if (s.mode === 'eating') {
+    bounce = -Math.abs(Math.sin(activity * 10)) * 1.6;
+    angle = Math.sin(activity * 5) * .018;
+  } else if (s.mode === 'posing') {
+    const settle = Math.min(1, activity / .5);
+    bounce = -Math.sin(settle * Math.PI) * 3.5;
+  } else if (s.mode === 'sleeping') {
+    bounce = Math.sin(activity * 2) * 1.15;
+    angle = -sleepBlend * .012;
+  } else if (s.mode === 'crying') angle = Math.sin(s.time * 15) * .035;
   else if (s.mode === 'carried') angle = Math.sin(s.time * 3) * .045;
-  if (s.mode === 'carried') {
-    ctx.save(); ctx.font = '108px "Segoe UI Emoji", "Apple Color Emoji", sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🫴', px, py + 32); ctx.restore();
+  if (lift > .02) {
+    ctx.save(); ctx.globalAlpha = Math.min(1, lift * 1.35); ctx.font = '108px "Segoe UI Emoji", "Apple Color Emoji", sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🫴', px, py + 34 - lift * 3); ctx.restore();
   }
-  ctx.save(); ctx.translate(px, py); ctx.rotate(angle);
-  drawTile(ctx, POSES[s.pose] ?? 0, 0, 0, isWheel ? .35 : .43, s.mode === 'running' ? 1 : s.facing, bounce); ctx.restore();
-  if (s.mode === 'sleeping') {
-    ctx.save(); ctx.fillStyle = '#7195c9'; ctx.font = 'bold 21px monospace'; ctx.fillText('z', px + 39, py - 65 - (s.time % 2) * 6); ctx.font = 'bold 15px monospace'; ctx.fillText('z', px + 55, py - 84 - (s.time % 2) * 6); ctx.restore();
+  let scale = .43 - wheelBlend * .08 + lift * .012 + sleepBlend * .006;
+  if (s.mode === 'eating' || burying) scale += Math.abs(Math.sin(activity * 10)) * .006;
+  if (s.mode === 'posing') scale += Math.sin(Math.min(1, activity / .5) * Math.PI) * .012;
+  const renderFacing = s.mode === 'running' ? 1 : (s.motion?.renderFacing ?? s.facing);
+  const poseBlend = s.motion?.poseBlend ?? 1;
+  const fromPose = s.motion?.fromPose;
+  ctx.save(); ctx.translate(px, bodyY); ctx.rotate(angle);
+  if (fromPose && POSES[fromPose] !== undefined && poseBlend < 1) {
+    ctx.globalAlpha = 1 - poseBlend; drawTile(ctx, POSES[fromPose], 0, 0, scale, renderFacing, bounce);
+    ctx.globalAlpha = poseBlend; drawTile(ctx, POSES[s.pose] ?? 0, 0, 0, scale, renderFacing, bounce);
+  } else drawTile(ctx, POSES[s.pose] ?? 0, 0, 0, scale, renderFacing, bounce);
+  ctx.restore();
+  if (sleepBlend > .04) {
+    ctx.save(); ctx.globalAlpha = sleepBlend; ctx.fillStyle = '#7195c9'; ctx.font = 'bold 21px monospace'; ctx.fillText('z', px + 39, py - 65 - (s.time % 2) * 6); ctx.font = 'bold 15px monospace'; ctx.fillText('z', px + 55, py - 84 - (s.time % 2) * 6); ctx.restore();
   }
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i]; p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt;

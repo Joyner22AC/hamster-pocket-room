@@ -26,9 +26,49 @@ test('feeding restores both hunger and energy; tired hamster cannot start runnin
   tick(g, 4); assert.equal(g.act('wheel'), true);
 });
 test('an exhausted wheel runner keeps sleeping to recover instead of waking immediately', () => {
-  const s = freshState(); s.energy = 15; const g = new HamsterGame(s);
+  const s = freshState(); s.energy = 15; s.x = ZONES.wheel.x; s.y = ZONES.wheel.y; const g = new HamsterGame(s);
   g.act('wheel'); tick(g, 7); assert.equal(g.s.mode, 'sleeping');
   const energy = g.s.energy; tick(g, 3); assert.equal(g.s.mode, 'sleeping'); assert.ok(g.s.energy > energy);
+});
+test('wheel action approaches first, accelerates, decelerates, then walks out', () => {
+  const g = new HamsterGame(freshState(), () => .5);
+  assert.equal(g.act('wheel'), true); assert.equal(g.s.mode, 'walking'); assert.equal(g.s.motion.pendingWheel, true);
+  tick(g, 3); assert.equal(g.s.mode, 'running'); assert.ok(g.s.motion.wheelSpeed > 0 && g.s.motion.wheelSpeed <= 5);
+  tick(g, 1); assert.equal(g.s.motion.wheelSpeed, 5);
+  g.s.actionUntil = g.s.time + .2; tick(g, .3);
+  assert.equal(g.s.motion.wheelStopping, true); assert.ok(g.s.motion.wheelSpeed < 5 && g.s.motion.wheelSpeed > 0);
+  tick(g, .8); assert.equal(g.s.mode, 'walking'); assert.ok(g.s.target.x < ZONES.wheel.x);
+  tick(g, 4); assert.equal(g.s.mode, 'idle'); assert.ok(g.s.x < ZONES.wheel.x);
+});
+test('walking eases facing direction and pickup/drop eases lift height', () => {
+  const s = freshState(); s.mode = 'walking'; s.target = { x: .3, y: .75 }; const g = new HamsterGame(s);
+  g.update(.1, night); assert.equal(g.s.facing, -1); assert.ok(g.s.motion.renderFacing < 1 && g.s.motion.renderFacing > -1); assert.ok(g.s.motion.stride > 0);
+  g.pickUp(); assert.equal(g.s.motion.lift, 0); g.update(.1, night); assert.ok(g.s.motion.lift > 0 && g.s.motion.lift < 1);
+  g.update(.2, night); assert.equal(g.s.motion.lift, 1); g.drop(.5, .75); g.update(.1, night); assert.ok(g.s.motion.lift > 0 && g.s.motion.lift < 1);
+  g.update(.2, night); assert.equal(g.s.motion.lift, 0);
+});
+test('pose changes blend briefly and runtime motion is never persisted', () => {
+  const g = new HamsterGame(); g.act('feed');
+  assert.equal(g.s.pose, 'eating'); assert.equal(g.s.motion.fromPose, 'idle'); assert.equal(g.s.motion.poseBlend, 0);
+  g.update(.1, night); assert.ok(g.s.motion.poseBlend > 0 && g.s.motion.poseBlend < 1);
+  tick(g, .2); assert.equal(g.s.motion.poseBlend, 1); assert.equal(g.s.motion.fromPose, null);
+  assert.equal(Object.hasOwn(saveSnapshot(g.s), 'motion'), false);
+});
+test('sleep fades in and waking fades the sleep blend back out', () => {
+  const g = new HamsterGame(); g.act('sleep');
+  assert.equal(g.s.pose, 'sleeping'); assert.equal(g.s.motion.fromPose, 'idle');
+  g.update(.1, night); assert.ok(g.s.motion.sleepBlend > 0 && g.s.motion.sleepBlend < 1);
+  const sleepingBlend = g.s.motion.sleepBlend; g.act('sleep'); assert.equal(g.s.mode, 'idle'); assert.equal(g.s.pose, 'idle');
+  g.update(.05, night); assert.ok(g.s.motion.sleepBlend > 0 && g.s.motion.sleepBlend < sleepingBlend);
+  g.update(.2, night); assert.equal(g.s.motion.sleepBlend, 0);
+});
+test('hiding pauses to bury the seed and searching pauses to sniff the remembered spot', () => {
+  const g = new HamsterGame(freshState(), () => .5); g.act('stash'); tick(g, 1.5);
+  assert.equal(g.s.mode, 'hiding'); assert.equal(g.s.pose, 'eating'); assert.equal(g.s.target, null); assert.ok(g.s.motion.hidingPauseUntil > g.s.time);
+  tick(g, 1.5); assert.equal(g.s.mode, 'idle');
+  g.moveStash(.88, .85); tick(g, 4.1);
+  assert.equal(g.s.mode, 'searching'); assert.equal(g.s.target, null); assert.ok(g.s.motion.searchPauseUntil > g.s.time);
+  tick(g, 1); assert.ok(g.s.target); assert.equal(g.s.mode, 'searching');
 });
 test('moving a stash preserves remembered position; failed search cries; returning seed is found', () => {
   const g = new HamsterGame(freshState(), () => .5); g.act('stash'); tick(g, 5);
