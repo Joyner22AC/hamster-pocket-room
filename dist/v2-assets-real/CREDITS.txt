@@ -1,0 +1,35 @@
+Visual V2 experimental assets
+
+Primary hamster
+- Model: オリジナル3Dモデル「ハムちゃん/Hamster」 by 如月十二
+- License: Creative Commons Zero (CC0 1.0), as stated on the BOOTH product page
+- Source: https://booth.pm/en/items/2621226
+- Original package: Ham.zip / Ham.unitypackage
+- Web derivative: Ham.fbx converted locally to hamchan-cc0.glb with FBX2glTF 0.9.7-p1
+- Converted GLB retains 1 skin with 41 joints and the embedded hamster texture; the downloaded FBX contains no animation stack.
+
+Fallback/reference hamster
+- Model: Hamster by Poly by Google
+- License: Creative Commons Attribution 3.0 (CC BY 3.0)
+- License URL: https://creativecommons.org/licenses/by/3.0/
+- Source: https://poly.pizza/m/3YtzEQ5TVUP
+- Kept only as an earlier lightweight prototype/reference asset.
+
+Furniture
+- Assets: Furniture Kit 2.0 by Kenney
+- License: Creative Commons Zero (CC0 1.0)
+- Source: https://kenney.nl/assets/furniture-kit
+
+Animation test animal
+- Asset: Cube Pets 2.0 / animal-bunny by Kenney
+- License: Creative Commons Zero (CC0 1.0)
+- Source: https://kenney.nl/assets/cube-pets
+- Used only as an AnimationMixer pipeline stand-in, not as the final hamster character.
+
+Runtime
+- Three.js 0.186.0
+- License: MIT
+- Source: https://threejs.org/
+
+These assets are used only in the independent V2 visual prototype at this stage. The published 2D game remains unchanged.
+

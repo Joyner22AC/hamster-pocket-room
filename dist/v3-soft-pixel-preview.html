@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>团团小屋 · V3 软像素玩具屋</title>
+  <link rel="stylesheet" href="v3-soft-pixel-preview.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">V3 VISUAL SLICE</p>
+        <h1>团团小屋</h1>
+      </div>
+      <div class="badge">Soft Pixel Diorama</div>
+    </header>
+
+    <section class="game-card" aria-label="V3 软像素玩具屋视觉切片">
+      <div class="canvas-wrap">
+        <canvas id="scene" width="480" height="270" aria-label="团团的小屋"></canvas>
+        <div class="glass-label" id="mode">团团正在发呆</div>
+      </div>
+      <div class="hint-row">
+        <span>点地面：走过去</span>
+        <span>点食盆：吃东西</span>
+        <span>点滚轮：跑一会</span>
+        <span>点小屋：睡一会</span>
+      </div>
+      <div class="stats" aria-label="原型说明">
+        <div><b>480×270</b><small>逻辑画布</small></div>
+        <div><b>Canvas 2D</b><small>零新框架</small></div>
+        <div><b id="payload">—</b><small>首屏静态体量</small></div>
+        <div><b>2.5D</b><small>分层 / 遮挡 / 暖光</small></div>
+      </div>
+    </section>
+
+    <p class="footnote">这是独立视觉切片，不读取正式存档，也不会修改当前正式 2D 游戏。</p>
+  </main>
+  <script type="module" src="v3-soft-pixel-preview.js"></script>
+</body>
+</html>

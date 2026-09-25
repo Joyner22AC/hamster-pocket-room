@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#eadfca">
+  <meta name="description" content="团团视觉系统 V2：DS 风格低模 3D 仓鼠技术原型。">
+  <title>团团 · 视觉系统 V2 原型</title>
+  <link rel="stylesheet" href="v2-prototype.css">
+</head>
+<body>
+<main class="prototype-shell">
+  <header class="prototype-header">
+    <div>
+      <span class="eyebrow">VISUAL SYSTEM V2 · TECH PROTOTYPE</span>
+      <h1>团团的 3D 小房间</h1>
+      <p>真实 WebGL 低模 3D · 正交斜俯视镜头 · 低分辨率像素化输出 · 连续动作动画</p>
+    </div>
+    <a class="back-link" href="index.html">返回正式版</a>
+  </header>
+
+  <section class="stage-card" aria-label="低模3D仓鼠技术原型">
+    <div class="screen-bezel">
+      <div class="pixel-screen">
+        <canvas id="gl-stage" width="320" height="180" aria-label="低模3D仓鼠房间。使用下方按钮切换动作。"></canvas>
+        <div class="screen-overlay">
+          <span id="mode-readout">IDLE · 呼吸与观察</span>
+          <span>320 × 180 INTERNAL</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prototype-controls" role="group" aria-label="动作演示">
+      <button type="button" data-mode="idle" class="active"><strong>Idle</strong><span>呼吸 / 张望</span></button>
+      <button type="button" data-mode="walk"><strong>Walk</strong><span>连续步态 / 转向</span></button>
+      <button type="button" data-mode="eat"><strong>Eat</strong><span>坐下 / 抱食 / 咀嚼</span></button>
+      <button type="button" id="camera-toggle"><strong>Camera</strong><span>正交镜头轻旋转</span></button>
+    </div>
+
+    <div class="prototype-notes">
+      <article><b>真实体积</b><span>仓鼠、房间和道具都由 3D 网格构成，不使用角色纸片。</span></article>
+      <article><b>DS 像素感</b><span>内部仅 320×180 渲染，再以 nearest-neighbor 放大。</span></article>
+      <article><b>连续动画</b><span>身体、头部、耳朵、四肢分层变换，不切换姿态图片。</span></article>
+    </div>
+  </section>
+
+  <footer>这是独立技术验证页，不替换当前正式游戏；通过视觉验收后再接入完整养成逻辑。</footer>
+</main>
+<script type="module" src="v2-prototype.js"></script>
+</body>
+</html>

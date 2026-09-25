@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>V2 动画管线实验</title>
+<link rel="stylesheet" href="v2-animation-lab.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js"}}</script>
+</head>
+<body>
+<main class="shell">
+<header><div><span>V2 · HAMSTER SKELETAL ANIMATION</span><h1>团团骨骼连续动画实验</h1><p>直接驱动 CC0 仓鼠的 Mixamo 骨骼；Idle / Walk / Run / Eat / Sleep / Pick Up / Wheel 使用 AnimationMixer 平滑切换。</p></div><a href="v2-real-preview.html">返回真实资产预览</a></header>
+<section class="card">
+<div class="screen"><canvas id="stage" width="320" height="180"></canvas><div class="hud"><b id="state">LOADING</b><span id="clips">—</span></div></div>
+<div class="buttons">
+<button data-clip="idle" class="active">Idle</button><button data-clip="walk">Walk</button><button data-clip="run">Run</button><button data-clip="eat">Eat</button><button data-clip="sleep">Sleep</button><button data-clip="pickup">Pick Up</button><button data-clip="wheel">Wheel</button>
+</div>
+<p class="note">动作全部由仓鼠本体的蒙皮骨骼驱动，使用 Three.js AnimationMixer cross-fade。第二轮加入髋骨重心轨，Walk/Run 更贴地，并新增 Sleep / Pick Up / Wheel。</p>
+</section>
+</main>
+<script type="module" src="v2-animation-lab.js"></script>
+</body></html>

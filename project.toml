@@ -1,0 +1,153 @@
+schema_version = 2
+project_id = "hamster-pocket-room"
+name = "团团仓鼠小游戏"
+description = "Codex 与 ChatGPT-AgentDock 共同维护的美术驱动静态网页仓鼠养成小游戏。"
+project_root = "."
+primary_language = "zh-CN"
+
+[goal]
+summary = "维护一个可通过公开链接游玩的轻量仓鼠养成小游戏，在保持原创素材、静态网页架构、可回退性和网页性能的前提下，以角色可爱度、场景氛围、互动生命感和移动端体验为核心质量目标。"
+
+[modules]
+project_configuration = "project.toml"
+executor_configuration = "executors/*.toml"
+agent_role_configuration = "agents/*.toml"
+task_job_configuration = "job.toml"
+production_team_configuration = "production-team.toml"
+project_rules = "AGENTS.md"
+shared_state = ".ai/PROJECT_STATE.md"
+decisions = ".ai/DECISIONS.md"
+session_log = ".ai/SESSION_LOG.md"
+
+[executors]
+enabled = ["codex", "chatgpt-agentdock"]
+configs = ["executors/codex.toml", "executors/chatgpt-agentdock.toml"]
+
+[agents]
+enabled = [
+  "art-director",
+  "visual-researcher",
+  "character-artist",
+  "game-designer",
+  "technical-artist",
+  "animation-interaction",
+  "character-animator",
+  "technical-animator",
+  "vfx-camera-designer",
+  "gameplay-engineer",
+  "ui-ux-designer",
+  "qa-performance"
+]
+configs = [
+  "agents/art-director.toml",
+  "agents/visual-researcher.toml",
+  "agents/character-artist.toml",
+  "agents/game-designer.toml",
+  "agents/technical-artist.toml",
+  "agents/animation-interaction.toml",
+  "agents/character-animator.toml",
+  "agents/technical-animator.toml",
+  "agents/vfx-camera-designer.toml",
+  "agents/gameplay-engineer.toml",
+  "agents/ui-ux-designer.toml",
+  "agents/qa-performance.toml"
+]
+
+[role_routing]
+"art-director" = ["chatgpt-agentdock"]
+"visual-researcher" = ["chatgpt-agentdock"]
+"character-artist" = ["chatgpt-agentdock", "codex"]
+"game-designer" = ["chatgpt-agentdock", "codex"]
+"technical-artist" = ["chatgpt-agentdock", "codex"]
+"animation-interaction" = ["chatgpt-agentdock", "codex"]
+"character-animator" = ["chatgpt-agentdock", "codex"]
+"technical-animator" = ["codex", "chatgpt-agentdock"]
+"vfx-camera-designer" = ["chatgpt-agentdock", "codex"]
+"gameplay-engineer" = ["codex"]
+"ui-ux-designer" = ["chatgpt-agentdock", "codex"]
+"qa-performance" = ["chatgpt-agentdock", "codex"]
+
+[production_pipeline]
+ordered_stages = [
+  "research",
+  "art-direction",
+  "character-art",
+  "gameplay-spec",
+  "animation-direction",
+  "technical-animation-prototype",
+  "visual-prototype",
+  "implementation",
+  "vfx-camera-and-ui",
+  "qa-and-performance",
+  "release-review"
+]
+visual_direction_before_full_implementation = true
+small_prototype_before_visual_migration = true
+art_director_acceptance_required_for_visual_migration = true
+qa_required_before_publish = true
+technology_must_not_override_art_direction = true
+preserve_working_formal_entry_until_replacement_is_approved = true
+
+[collaboration]
+professional_roles_are_distinct_from_executors = true
+job_selects_active_roles = true
+job_selects_executors = true
+same_executor_may_hold_multiple_roles = true
+cross_role_review_preferred = true
+self_review_limitations_must_be_logged = true
+role_owner_must_not_silently_change_other_role_requirements = true
+
+[stable_paths]
+rules = "AGENTS.md"
+state_dir = ".ai"
+project_state = ".ai/PROJECT_STATE.md"
+decisions = ".ai/DECISIONS.md"
+session_log = ".ai/SESSION_LOG.md"
+executors = "executors"
+agent_roles = "agents"
+current_job = "job.toml"
+production_team = "production-team.toml"
+site = "dist"
+assets = "dist/assets"
+tests = "tests"
+scripts = "scripts"
+research = "research"
+hosting = ".openai/hosting.json"
+local_workspace = ".local"
+
+[initialization]
+ordered_steps = [
+  "read AGENTS.md",
+  "read project.toml",
+  "read .ai/PROJECT_STATE.md and relevant .ai/DECISIONS.md plus recent .ai/SESSION_LOG.md",
+  "inspect Git branch, status, recent commits, and relevant uncommitted diffs",
+  "verify the real project structure and reconcile shared state with disk and Git before work",
+  "read production-team.toml when the current job targets character motion, animation quality, interaction feel, or gameplay polish",
+  "read job.toml",
+  "read the selected executor configs and active professional role configs"
+]
+source_of_truth = "disk_and_git"
+chat_history_is_authoritative = false
+
+[security]
+auto_commit = false
+auto_push = false
+auto_reset = false
+auto_clean = false
+delete_requires_explicit_authorization = true
+overwrite_other_agent_uncommitted_changes = false
+modify_git_history = false
+publish_requires_explicit_authorization = true
+preserve_unknown_changes = true
+secrets_must_not_be_committed = true
+
+[handoff]
+state_files = [
+  ".ai/PROJECT_STATE.md",
+  ".ai/DECISIONS.md",
+  ".ai/SESSION_LOG.md"
+]
+require_git_status_review = true
+require_diff_review = true
+require_validation = true
+require_active_role_summary = true

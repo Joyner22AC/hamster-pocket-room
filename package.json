@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "check": "node scripts/check.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "build:v2": "node scripts/build-v2.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.10"
   }
 }

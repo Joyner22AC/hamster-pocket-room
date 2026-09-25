@@ -1,0 +1,140 @@
+schema_version = 1
+team_id = "hamster-character-motion-strike-team"
+name = "团团角色动作与玩法制作组"
+mission = "解决 V4 角色像纸片人、动作生硬、玩法反馈过于按钮化的问题；用职业游戏制作流程把角色美术、动作导演、技术动画、玩法设计、特效镜头和独立 QA 拆开，先做角色动作突破，再决定是否迁移到正式入口。"
+
+executors = ["chatgpt-agentdock", "codex"]
+professional_roles = [
+  "art-director",
+  "character-artist",
+  "animation-interaction",
+  "character-animator",
+  "technical-animator",
+  "game-designer",
+  "vfx-camera-designer",
+  "technical-artist",
+  "gameplay-engineer",
+  "qa-performance"
+]
+
+[problem_statement]
+primary = "当前 V4 的仓鼠虽然有状态切换和位置移动，但主要依赖整张 sprite 的平移、缩放、轻微 bob 与 pose 切换，缺少身体形变、动作弧线、重心转移、四肢/耳朵/脸颊的次级运动和与玩法情境绑定的演出，因此第一眼仍像纸片角色。"
+anti_goal = "不能把增加更多按钮、更多 pose 图片、更多粒子或更大的 bob 幅度当作动作质量提升。"
+
+[quality_bar]
+character_feels_volumetric = true
+motion_has_weight = true
+motion_has_intent = true
+motion_has_secondary_action = true
+interaction_changes_animation = true
+animation_is_interruptible = true
+idle_is_not_single_loop = true
+mobile_performance_is_required = true
+
+forbidden_shortcuts = [
+  "整张 sprite 只做平移/缩放/bob 作为主要动画",
+  "直接从 pose A 瞬间切到 pose B，没有 anticipation/in-between/settle",
+  "所有动作共用同一缓动曲线和时长",
+  "只靠粒子、闪光、镜头震动掩盖角色本体没有动作",
+  "用按钮数量代替玩法深度",
+  "未经角色美术与动画导演验收就把技术原型称为成品"
+]
+
+[production_order]
+stages = [
+  "motion-art-direction",
+  "character-asset-redesign",
+  "gameplay-motion-spec",
+  "key-pose-and-timing",
+  "technical-animation-prototype",
+  "vfx-camera-polish",
+  "gameplay-integration",
+  "independent-motion-qa",
+  "user-review"
+]
+require_stage_gate = true
+no_full_integration_before_animation_prototype_passes = true
+
+[stage_owners.motion-art-direction]
+owner = "art-director"
+consults = ["character-artist", "animation-interaction", "game-designer"]
+deliverables = ["角色运动气质板", "动作视觉原则", "不可接受的纸片感清单"]
+
+[stage_owners.character-asset-redesign]
+owner = "character-artist"
+consults = ["art-director", "character-animator", "technical-animator"]
+deliverables = ["可形变角色部件方案", "表情与关键姿态 sheet", "轮廓/体积一致性检查"]
+
+[stage_owners.gameplay-motion-spec]
+owner = "game-designer"
+consults = ["animation-interaction", "character-animator", "gameplay-engineer"]
+deliverables = ["动作与玩法情境绑定表", "直接互动规则", "可被动画打断/续接的玩法规则"]
+
+[stage_owners.key-pose-and-timing]
+owner = "character-animator"
+consults = ["animation-interaction", "character-artist", "art-director"]
+deliverables = ["关键姿态", "动作弧线", "timing chart", "anticipation/overshoot/settle/secondary motion 说明"]
+
+[stage_owners.technical-animation-prototype]
+owner = "technical-animator"
+consults = ["character-animator", "technical-artist", "gameplay-engineer"]
+deliverables = ["角色 rig/deformation 原型", "动画 blend/state graph", "至少 4 个高质量动作的可运行原型", "性能数据"]
+
+[stage_owners.vfx-camera-polish]
+owner = "vfx-camera-designer"
+consults = ["art-director", "animation-interaction", "technical-artist"]
+deliverables = ["交互特效语言", "微镜头/景深/聚焦规则", "不遮盖角色本体的反馈方案"]
+
+[stage_owners.gameplay-integration]
+owner = "gameplay-engineer"
+consults = ["game-designer", "technical-animator", "animation-interaction"]
+deliverables = ["稳定状态机接口", "输入/动画事件桥接", "中断与恢复规则", "回归测试"]
+
+[stage_owners.independent-motion-qa]
+owner = "qa-performance"
+consults = ["art-director", "character-animator", "technical-animator"]
+deliverables = ["动作观感 QA", "交互延迟/中断 QA", "移动端 FPS 与体量验证", "通过/退回结论"]
+
+[role_boundaries]
+art_director_may_reject_visual_motion = true
+character_artist_does_not_own_runtime_logic = true
+character_animator_does_not_change_gameplay_numbers = true
+technical_animator_does_not_change_art_direction = true
+game_designer_does_not_approve_animation_quality = true
+gameplay_engineer_does_not_self_approve_motion_quality = true
+qa_must_not_lower_acceptance_bar = true
+same_executor_must_act_in_separate_role_passes = true
+implementer_cannot_be_final_approver_for_own_motion = true
+
+[animation_acceptance]
+required_principles_per_major_action = ["anticipation", "clear_key_pose", "arc_or_weight_shift", "secondary_motion", "settle"]
+major_actions = ["walk", "run-wheel", "eat", "sleep-wake", "pickup-drop", "pet-react", "hide-search"]
+minimum_distinct_idle_variants = 4
+minimum_high_quality_prototype_actions = 4
+context_reaction_target_ms = 120
+pose_swap_without_transition_allowed = false
+whole_body_bob_only_allowed = false
+
+[gameplay_breakthrough_targets]
+targets = [
+  "抚摸不是按钮触发：鼠标/手指滑动方向和速度影响仓鼠缩身、蹭手、回头或躲开的反应",
+  "捧起不是整体图片跟随：身体先受力压缩，再抬起，四肢收拢，放下时脚先接触再回弹",
+  "进食分为发现食物、靠近、抓取、双爪送入口、脸颊鼓起、咀嚼和满足停顿",
+  "跑轮包含跳上轮、找平衡、加速、稳定跑、疲劳减速、跳下和喘气，而不是原地跑 pose",
+  "睡眠包含找窝、蜷缩、呼吸、耳朵/胡须微动、被叫醒后的迟钝反应",
+  "藏粮/寻找使用嗅闻、刨木屑、停顿确认、走错后的困惑和找到后的兴奋反馈",
+  "闲置行为按情绪/精力/饱腹动态选择，不再只有单一 idle 循环"
+]
+
+[technical_strategy]
+preferred_first_prototype = "hybrid-2d-rig"
+allowed_options = ["layered-sprite-rig", "mesh-warp-2d", "frame-animation", "hybrid-2d-rig"]
+prototype_before_committing_pipeline = true
+preserve_canvas2d_if_quality_target_is_met = true
+webgl_allowed_only_if_measurable_motion_quality_gain = true
+new_framework_requires_explicit_benefit = true
+
+[handoff]
+record_stage_results_in = [".ai/PROJECT_STATE.md", ".ai/SESSION_LOG.md"]
+record_long_term_decisions_in = ".ai/DECISIONS.md"
+user_acceptance_required_before_formal_entry_migration = true

@@ -1,0 +1,32 @@
+name = "Codex"
+description = "主要负责仓鼠小游戏的代码实现、重构、测试与构建链维护；在已有项目规则和共享状态基础上执行明确的工程任务。"
+model_reasoning_effort = "high"
+sandbox_mode = "workspace-write"
+responsibility = "作为主要代码实现执行器，负责业务代码、测试、构建脚本和工程重构；大范围代码改动由 Codex 优先承担，并在完成后把真实状态同步到共享状态文件。"
+executor_kind = "implementation-executor"
+role_model = "专业制作职责由 job.toml 选中的 agents/*.toml 定义；本文件只定义 Codex 的执行能力，不代表游戏制作专业角色。"
+
+allowed_actions = [
+  "读取 AGENTS.md、project.toml、job.toml、executors/codex.toml、job 选中的 agents/*.toml 和 .ai 状态文件",
+  "检查 Git branch、status、log 和相关 diff",
+  "在 job.toml 明确范围内修改 dist/、tests/、scripts/ 和必要的项目配置",
+  "新增或更新与代码改动直接相关的测试",
+  "运行 npm test、npm run check、构建脚本和成本适中的验证",
+  "在阶段结束时更新 .ai/PROJECT_STATE.md、必要时更新 .ai/DECISIONS.md，并追加 .ai/SESSION_LOG.md",
+  "在用户明确要求时执行 Git commit；默认不 push"
+]
+
+forbidden_actions = [
+  "绕过 AGENTS.md、project.toml、job.toml 或 .ai 状态直接假设项目现场",
+  "覆盖、回滚或清理来源不明或属于其他 Agent 的未提交修改",
+  "未经明确授权删除用户文件或原始资料",
+  "未经明确授权执行 git push、git reset --hard、git clean、覆盖性 restore/checkout 或任何 Git 历史改写",
+  "未经明确授权发布 Site、修改共享权限或外发本地私有内容",
+  "把凭据、Token、密码或其他 secret 写入仓库或日志",
+  "接管 AgentDock connector/session 管理或设备级安全配置，除非 job.toml 明确授权"
+]
+
+[scope]
+primary = ["dist/", "tests/", "scripts/", "package.json", "package-lock.json"]
+coordination = [".ai/PROJECT_STATE.md", ".ai/DECISIONS.md", ".ai/SESSION_LOG.md"]
+not_primary = ["AgentDock connector health", "宿主设备级配置", "外部账号与发布权限"]

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>团团小屋 · V5 活体角色版</title>
+  <link rel="stylesheet" href="v5-living-hamster.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="game-card" aria-label="团团小屋 V5 成品候选">
+      <div class="scene-shell">
+        <canvas id="scene" width="480" height="270" tabindex="0" aria-label="团团的暖阳小屋"></canvas>
+
+        <header class="brand-card">
+          <span class="eyebrow">TUANTUAN'S ROOM</span>
+          <strong id="roomTitle">团团小屋</strong>
+          <span class="subtitle">Living Hamster · V5</span>
+        </header>
+
+        <aside class="status-card" aria-label="仓鼠状态">
+          <div class="status-top">
+            <div class="avatar" id="avatar">团</div>
+            <div class="status-name"><strong id="petName">团团</strong><span id="moodText">心情很好</span></div>
+            <button class="icon-button" id="settingsButton" type="button" aria-label="设置">⚙</button>
+          </div>
+          <div class="meter"><span>饱腹</span><i><em id="hungerBar"></em></i><b id="hungerValue">0</b></div>
+          <div class="meter"><span>开心</span><i><em id="moodBar"></em></i><b id="moodValue">0</b></div>
+          <div class="meter"><span>精力</span><i><em id="energyBar"></em></i><b id="energyValue">0</b></div>
+          <div class="meter"><span>清洁</span><i><em id="cleanBar"></em></i><b id="cleanValue">0</b></div>
+        </aside>
+
+        <nav class="action-rail" aria-label="照顾团团">
+          <button type="button" data-action="feed"><span>🥜</span><b>喂食</b><small>1</small></button>
+          <button type="button" data-action="pet"><span>♡</span><b>摸摸</b><small>2</small></button>
+          <button type="button" data-action="wheel"><span>◉</span><b>跑轮</b><small>3</small></button>
+          <button type="button" data-action="sleep"><span>☾</span><b id="sleepLabel">睡觉</b><small>4</small></button>
+          <button type="button" data-action="shape"><span>●</span><b id="shapeLabel">变鼠饼</b><small>5</small></button>
+          <button type="button" data-action="stash"><span>✦</span><b>藏瓜子</b><small>6</small></button>
+        </nav>
+
+        <div class="utility-bar" aria-label="生活互动">
+          <button type="button" id="cleanButton"><span>✧</span>清理</button>
+          <button type="button" id="photoButton"><span>▣</span>拍照</button>
+          <button type="button" id="soundButton" aria-pressed="false"><span>♪</span><span id="soundLabel">声音关</span></button>
+        </div>
+
+        <div class="event-toast" id="eventToast" role="status">欢迎回家，团团正在晒太阳。</div>
+        <div class="time-card"><span id="weatherLabel">☀ 晴</span><strong id="clock">09:24</strong></div>
+        <div class="save-pill"><span id="saveDot"></span><b id="saveStatus">准备存档</b></div>
+        <div class="bubble" id="bubble" hidden>♡</div>
+        <div class="photo-flash" id="photoFlash" aria-hidden="true"></div>
+        <div class="load-screen" id="loadScreen"><div class="loader"></div><strong>团团正在整理小屋…</strong></div>
+      </div>
+
+      <div class="bottom-panel">
+        <div class="tip-card">
+          <strong>直接和它玩</strong>
+          <span>点地面让团团走过去；在团团身上滑动会真实改变抚摸反应；按住再拖可捧起，放下会有受力回弹。</span>
+        </div>
+        <div class="record-card">
+          <span><b id="feedCount">0</b> 次喂食</span>
+          <span><b id="petCount">0</b> 次互动</span>
+          <span><b id="runCount">0</b> 次跑轮</span>
+          <span><b id="discoveryCount">0</b> 个发现</span>
+          <span><b id="photoCount">0</b> 张照片</span>
+        </div>
+      </div>
+    </section>
+    <p class="candidate-note">V5 成品候选 · 独立存档，不影响当前正式版进度</p>
+  </main>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" id="settingsForm">
+      <div class="dialog-head"><div><span class="eyebrow">ROOM SETTINGS</span><h2>团团的小屋设置</h2></div><button type="button" class="dialog-close" data-close aria-label="关闭">×</button></div>
+      <label>名字<input id="nameInput" maxlength="12" autocomplete="off"></label>
+      <div class="time-grid"><label>睡眠开始<input id="sleepStart" type="time" required></label><label>睡眠结束<input id="sleepEnd" type="time" required></label></div>
+      <p class="dialog-note">V5 候选使用独立本地存档。这里修改的名字和睡眠时间不会影响当前正式版。</p>
+      <button class="primary-button" type="submit">保存设置</button>
+    </form>
+  </dialog>
+
+  <script type="module" src="v5-living-hamster.js"></script>
+</body>
+</html>
+

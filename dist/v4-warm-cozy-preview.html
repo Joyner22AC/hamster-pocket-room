@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>团团小屋 · V4 暖阳像素玩具屋</title>
+  <link rel="stylesheet" href="v4-warm-cozy-preview.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="game-frame" aria-label="V4 暖阳像素玩具屋可试玩原型">
+      <div class="scene-wrap">
+        <canvas id="scene" width="480" height="270" aria-label="团团的暖阳小屋"></canvas>
+
+        <header class="brand-card" aria-label="游戏标题">
+          <span class="brand-kicker">TUANTUAN'S ROOM</span>
+          <strong>团团小屋</strong>
+          <span class="brand-sub">暖阳像素玩具屋 · V4</span>
+        </header>
+
+        <nav class="action-rail" aria-label="互动动作">
+          <button type="button" data-action="feed"><span aria-hidden="true">🥜</span><b>喂食</b></button>
+          <button type="button" data-action="play"><span aria-hidden="true">♡</span><b>互动</b></button>
+          <button type="button" data-action="clean"><span aria-hidden="true">✦</span><b>清理</b></button>
+          <button type="button" data-action="photo"><span aria-hidden="true">▣</span><b>拍照</b></button>
+          <button type="button" data-action="wheel"><span aria-hidden="true">◉</span><b>跑轮</b></button>
+          <button type="button" data-action="sleep"><span aria-hidden="true">☾</span><b>睡觉</b></button>
+        </nav>
+
+        <aside class="status-card" aria-label="团团状态">
+          <div class="status-head">
+            <div class="avatar" aria-hidden="true">团</div>
+            <div><strong>团团</strong><span id="mood">心情很好</span></div>
+          </div>
+          <div class="meter"><span>饱腹</span><i><em id="hungerBar"></em></i></div>
+          <div class="meter"><span>开心</span><i><em id="joyBar"></em></i></div>
+          <div class="meter"><span>清洁</span><i><em id="cleanBar"></em></i></div>
+          <div class="meter"><span>精力</span><i><em id="energyBar"></em></i></div>
+        </aside>
+
+        <div class="mode-pill" id="mode" role="status">团团正在晒太阳</div>
+        <div class="time-card"><span>☀ 晴</span><strong id="clock">09:24</strong></div>
+        <div class="photo-flash" id="photoFlash" aria-hidden="true"></div>
+      </div>
+
+      <footer class="info-strip">
+        <span>点地面可移动</span>
+        <span>Canvas 2D · 0 KB 新框架</span>
+        <span id="payload">首屏体量计算中…</span>
+        <span>独立预览 · 不读取正式存档</span>
+      </footer>
+    </section>
+  </main>
+  <script type="module" src="v4-warm-cozy-preview.js"></script>
+</body>
+</html>
