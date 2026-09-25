@@ -49,19 +49,14 @@ V6 `Hamster Reborn` 成品候选已完成，独立入口为 `dist/v6-hamster-reb
 
 ## Working Tree
 
-- 分支：`master`，HEAD 为 `50e717e77df61c7ed12e99d6416533bf5cde46d6`。
-- V2 候选相关未提交内容包括 `dist/v2-real-preview.*`、`dist/v2-game.bundle.js`、`dist/v2-assets-real/`、`dist/vendor/`、旧 V2 实验页、`scripts/build-v2.mjs`、`scripts/check.mjs`、`package.json`、`package-lock.json`、研究记录和 `.ai` 共享状态。
-- 协作配置当前有效：`executors/codex.toml`、`executors/chatgpt-agentdock.toml` 定义执行能力；`agents/` 现有 12 个专业角色；`production-team.toml` 定义角色动画/玩法突破制作组与 stage gate；`project.toml` schema_version=2；当前 `job.toml` 为 `2026-09-25-v6-hamster-reborn-candidate`，active roles 仍为 Art Director / Character Artist / Animation & Interaction / Character Animator / Technical Animator / Game Designer / VFX & Camera / Technical Artist / Gameplay Engineer / QA & Performance。
-- V4 有效未提交内容包括 `research/视觉V4暖阳像素玩具屋风格拆解.md`、`dist/v4-assets/`、第一轮 `dist/v4-warm-cozy-preview.*`，以及本轮成品候选 `dist/v4-finished.html` / `.css` / `.js`；这些均为有效工作，不得当作临时垃圾清理。
-- `scripts/check.mjs` 已纳入 V4 preview 与 V4 finished 的 JS/HTML/CSS/资源存在性和 duplicate id 检查；`.local/v4-finished-cdp-smoke.cjs`、`.local/v4-finished-smoke/` 与 Headless Chrome profile 仅为本地验证产物，不纳入 Git。
+- 分支：`master`，HEAD 已推送到 GitHub private 仓库 `Joyner22AC/hamster-pocket-room`；当前远端 `origin/master` 与本地 HEAD 一致。`r`n- V2/V3/V4/V5/V6 当前有效项目内容已纳入 Git；`.local/` 验证产物仍保持忽略，不纳入仓库。`r`n- 协作配置当前有效：`executors/codex.toml`、`executors/chatgpt-agentdock.toml` 定义执行能力；`agents/` 现有 12 个专业角色；`production-team.toml` 定义角色动画/玩法突破制作组与 stage gate；`project.toml` schema_version=2；当前 `job.toml` 为 `2026-09-25-v6-hamster-reborn-candidate`，active roles 仍为 Art Director / Character Artist / Animation & Interaction / Character Animator / Technical Animator / Game Designer / VFX & Camera / Technical Artist / Gameplay Engineer / QA & Performance。
+- V4 研究、资产、preview 与 finished 候选均已纳入 Git，继续作为历史/对照工作保留。`r`n- `scripts/check.mjs` 已纳入 V4 preview 与 V4 finished 的 JS/HTML/CSS/资源存在性和 duplicate id 检查；`.local/v4-finished-cdp-smoke.cjs`、`.local/v4-finished-smoke/` 与 Headless Chrome profile 仅为本地验证产物，不纳入 Git。
 - `esbuild@0.25.10` 仅为开发依赖；网页运行时仍是纯静态，不依赖 Node/npm。
 - 正式 `dist/index.html`、`dist/app.js`、`dist/engine.js` 当前无本轮 diff；`.openai/hosting.json` 未修改。
 - `.local/` 中保留浏览器烟测、截图、下载资产和隔离工具，均不纳入 Git。
 - 本轮新增规则涉及 `AGENTS.md`、`.ai/PROJECT_STATE.md`、`.ai/DECISIONS.md`、`.ai/SESSION_LOG.md`；它们是有效协作文档修改，不是临时实验。
 - 本轮新增 `production-team.toml` 与 `agents/character-artist.toml`、`agents/character-animator.toml`、`agents/technical-animator.toml`、`agents/vfx-camera-designer.toml`；均属于长期制作配置，不是一次性草稿。
-- V5 有效未提交内容新增 `research/V5角色动作与玩法规格.md`、`dist/v5-assets/hamster-rig-parts.webp`、`dist/v5-living-hamster.html`、`.css`、`.js`；`.local/make_v5_parts.py`、`.local/v5-cdp-smoke.cjs`、`.local/v5-smoke/` 与 Chrome profile 仅为本地生成/验证产物，不纳入 Git。
-- V6 有效未提交内容新增 `research/V6角色美术基准与关键帧方案.md`、`dist/v6-assets/hamster-v6-frames.webp`、`dist/v6-hamster-reborn.html`、`.css`、`.js`；`.local/make_v6_frames.py`、`.local/v6-cdp-smoke.cjs`、`.local/v6-art/`、`.local/v6-smoke/` 与 Chrome profile 仅为本地生成/验证产物，不纳入 Git。
-
+- V5 研究、分层角色 atlas 与 candidate 页面均已纳入 Git；`.local/` 生成与验证产物继续忽略。`r`n- V6 研究、20 帧角色 atlas 与 candidate 页面均已纳入 Git；`.local/` 生成与验证产物继续忽略。`r`n
 ## Validation
 
 - 2026-09-25 V6 Art/Motion Gate：V5 失败点已明确记录为“可见分件、脸颊贴片、耳朵/面部比例与高度对称造成人偶/熊感”。V6 改为完整角色关键帧；`hamster-v6-frames.webp` 为 5×4 / 20 pose atlas，完整帧包含 idle/sniff/groom/look、walk A/passing/B/settle、eat 四阶段、pickup/drop、run 三阶段、sleep、pet nuzzle。
@@ -133,4 +128,5 @@ V6 `Hamster Reborn` 成品候选已完成，独立入口为 `dist/v6-hamster-reb
 
 ## Resume From Here
 
-下一位执行器从仓库根目录开始，严格按 `AGENTS.md` → `project.toml` → `.ai/PROJECT_STATE.md` / 相关 `DECISIONS.md` / 最近 `SESSION_LOG.md` → Git branch/status/log/diff → 真实磁盘结构初始化，然后读取 `production-team.toml`、当前 `job.toml`、被选中的 `executors/*.toml` 与全部 active `agents/*.toml`。保留全部现有 V2/V3/V4/V5/V6 未提交工作，不要清理或迁移。当前 `job.toml` 为 `2026-09-25-v6-hamster-reborn-candidate`；V6 `dist/v6-hamster-reborn.html` 已通过完整角色 Art/Motion Gate、持久化、桌面/390px 布局、FPS 与完整 CDP 交互验证。当前断点是让用户实际试玩 `http://127.0.0.1:4176/v6-hamster-reborn.html`，先验收“静态角色是否一眼像仓鼠”，再验收动作。用户认可后再讨论正式入口迁移；用户不认可则退回 V6 完整角色关键帧美术，不回到 V5 可见分件拼装。未获明确授权前不要发布、commit、push、reset 或 clean。
+下一位执行器从仓库根目录开始，严格按 `AGENTS.md` → `project.toml` → `.ai/PROJECT_STATE.md` / 相关 `DECISIONS.md` / 最近 `SESSION_LOG.md` → Git branch/status/log/diff → 真实磁盘结构初始化，然后读取 `production-team.toml`、当前 `job.toml`、被选中的 `executors/*.toml` 与全部 active `agents/*.toml`。保留全部现有 V2/V3/V4/V5/V6 已提交历史与当前 V6 工作，不要清理或迁移。当前 `job.toml` 为 `2026-09-25-v6-hamster-reborn-candidate`；V6 `dist/v6-hamster-reborn.html` 已通过完整角色 Art/Motion Gate、持久化、桌面/390px 布局、FPS 与完整 CDP 交互验证。当前断点是让用户实际试玩 `http://127.0.0.1:4176/v6-hamster-reborn.html`，先验收“静态角色是否一眼像仓鼠”，再验收动作。用户认可后再讨论正式入口迁移；用户不认可则退回 V6 完整角色关键帧美术，不回到 V5 可见分件拼装。未获明确授权前不要发布、commit、push、reset 或 clean。
+

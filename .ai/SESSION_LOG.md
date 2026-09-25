@@ -1114,3 +1114,11 @@ V4 成品候选已技术完成，当前断点是用户直接试玩 `http://127.0
 - 正式 `dist/index.html` / `dist/app.js` / `dist/engine.js` / `.openai/hosting.json` 本轮保持不变。
 - 当前断点：让用户试玩 `http://127.0.0.1:4176/v6-hamster-reborn.html`，先验收静态角色是否一眼像仓鼠，再验收动作。若仍不认可，退回完整角色关键帧美术，不回 V5 分件 rig。
 - 本轮未 commit、未 push、未 reset、未 clean、未发布。
+
+## 2026-09-25 — GitHub private repository push
+
+- 用户明确授权将项目 commit 并 push 到 GitHub 私人仓库，方便移动端查看。
+- 创建并验证 private 仓库：Joyner22AC/hamster-pocket-room。
+- 首次推送提交：5e1f60fc2fbf0518cc3cc5e05dffabdf7d25a176；GitHub API 反查 isibility=private，远端 master 与本地 HEAD 一致。
+- 推送前对 staged 文本执行明显凭据模式扫描，未发现 Token/密码模式。
+- 本次授权仅覆盖此次 commit/push；后续仍按 AGENTS.md 默认不自动 push。
