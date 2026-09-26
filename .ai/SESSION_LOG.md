@@ -1122,3 +1122,37 @@ V4 成品候选已技术完成，当前断点是用户直接试玩 `http://127.0
 - 首次推送提交：5e1f60fc2fbf0518cc3cc5e05dffabdf7d25a176；GitHub API 反查 isibility=private，远端 master 与本地 HEAD 一致。
 - 推送前对 staged 文本执行明显凭据模式扫描，未发现 Token/密码模式。
 - 本次授权仅覆盖此次 commit/push；后续仍按 AGENTS.md 默认不自动 push。
+
+## 2026-09-26 — ChatGPT-AgentDock · V7 Character Reboot 成品推进
+
+### 接管与研究
+- AgentDock 0.8.3 / Windows amd64 真实调用成功；`%USERPROFILE%\Documents\AgentDock-Test\mcp-smoke.txt` 写入并读回精确内容 `smoke test`。
+- 按 AGENTS → project.toml → shared state → Git → production-team/job/roles 完成接管；未 reset/clean/delete，未覆盖未知工作。
+- 用户明确将 V6 判定为仍然“很惊悚”，因此本轮把角色模型设为最高优先级。
+- 新增 `research/V7角色模型与动画参考拆解.md`，拆解 Animal Crossing、Little Kitty Big City、Kirby 与 SPINE 的可爱角色/动作原则，并建立 V7 Art Gate / Motion Bible。
+
+### Character Reboot
+- 当前 `job.toml` 切换为 `2026-09-26-v7-character-reboot`。
+- 新增 `dist/v7-hamster-alive.html` / `.css` / `.js`。
+- 角色改用已有 CC0 `dist/v2-assets-real/hamchan-cc0.glb`，实测 1 skin / 41 joints；来源和许可沿用 `CREDITS.txt`。
+- V7 不再使用 V2 NearestFilter 粗像素化：改为 LinearMipmapLinear + anisotropy、SRGB、ACES tone mapping、暖 key / 冷 fill / rim light。
+- 美术迭代通过截图实际复核：把毛色从灰白改为暖金棕/奶油色，横向略加宽、纵向压低，角色朝向改为更侧向 3/4，减少正面人偶感；最终静态 Art Gate 截图在 `.local/v7-smoke/art-gate.png`。
+- 程序化骨骼 clips：breath / sniff / look / groom / walk / eat / pet / pickup / drop / run / sleep；AnimationMixer cross-fade。
+- 直接手势：横向 stroke → nuzzle；长按约 340ms 再拖 → pickup；release → drop；点地面移动；feed/wheel/sleep/shape/stash 继续桥接未修改的 engine.js。
+- V7 独立存档 key：`hamster-pocket-room-v7-candidate-v1`。
+
+### Browser / Motion Gate
+- Chrome Headless + CDP：桌面模型加载成功，`bones=41`，errors=[]。
+- direct pet：`lastGesture=nuzzle` 且 pet count 增加；pickup long-press + drag 进入 carried；drop 后退出 carried。
+- feed 进入 eating；wheel approach 后进入 running 并增加 run count；四 idle `breath/sniff/look/groom` 全部可选。
+- 桌面 FPS 约 57–61，最低观测约 55 FPS。
+- 390×844：scrollWidth/bodyWidth=390，scene≈358×201，六按钮均在视口，41 bones，约 60–61 FPS，errors=[]。
+- `.local/v7-smoke/desktop.png` / `mobile.png` 仅为本地 QA 产物，不入 Git。
+
+### Regression / Safety
+- `node --check dist/v7-hamster-alive.js` 通过。
+- `npm run check`：58 个静态文件通过，Repository payload ≈6.80 MB。
+- `npm test`：13/13。
+- `git diff --check`：通过。
+- 正式 `dist/index.html` / `dist/app.js` / `dist/engine.js` / `.openai/hosting.json` 本轮不修改。
+- 同一 ChatGPT-AgentDock 执行器承担实现与 QA；已用自动化、截图与实际浏览器交互做交叉验证，但最终美术喜好仍由用户在线试玩确认。

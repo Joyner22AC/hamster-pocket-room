@@ -110,3 +110,14 @@
 - 玩法保留：继续保留直接手势抚摸、长按捧起/落地、动态 idle、分阶段进食/跑轮和既有 `engine.js` 状态机；V6 使用独立 candidate localStorage。
 - 技术结果：Canvas 2D 足以保持约 60 FPS，390px 手机模拟无横向溢出，当前没有理由为了角色质量切换 WebGL。若用户仍不认可，优先重画/增加完整关键帧或加入轻量 mesh deformation，而不是回到 V5 可见分件拼装。
 - 迁移边界：正式入口继续不动，直到用户先认可 V6 静态角色“像仓鼠”，再认可动作自然度。
+
+## 2026-09-26 — V7 改用真实 Skinned Hamster + Bone Animation
+
+- 触发：用户试玩 V6 后仍明确反馈角色美术“很惊悚”，并要求首要任务先把角色模型做对，再谈动作与玩法。
+- 决策：V7 停止继续扩写 V6 whole-frame raster hamster，也不回退 V5 visible-parts rig；启用项目已有 CC0 `dist/v2-assets-real/hamchan-cc0.glb` 作为角色本体。该 GLB 保留 1 skin / 41 joints，来源与许可记录在 `dist/v2-assets-real/CREDITS.txt`。
+- 美术处理：V7 对角色启用平滑 mipmap / anisotropy、ACES tone mapping、暖主光与弱冷补光；毛色改为暖金棕/奶油方向；运行时将角色横向略加宽、纵向压低，并使用更侧向的 3/4 朝向，优先消除直立人偶感。
+- 动画路线：本轮所有主要角色动作由真实骨骼驱动，使用 Three.js `AnimationMixer` cross-fade；自建 `breath/sniff/look/groom/walk/eat/pet/pickup/drop/run/sleep` clips。whole-body translate/scale 仅用于世界位移、深度缩放和被捧起高度，不作为主要表演动画。
+- 交互路线：角色表面水平 stroke → nuzzle；长按约 0.34 秒后 drag → pickup；release → drop；保留 engine.js 的 feed/wheel/sleep/shape/stash 规则和独立 V7 localStorage。
+- 场景路线：保留 V4 暖阳木质房间作为视觉背景，V7 只把角色改为真实 WebGL 3D；不回到 V2 低多边形家具场景，也不修改正式 `index/app/engine`。
+- 验收：V7 必须同时通过静态 Art Gate、直接手势、核心动作、桌面/390px、>=30 FPS、浏览器零错误、`npm run check` / `npm test` / `git diff --check`；最终审美仍由用户在线试玩决定。
+- 重新评估条件：若用户仍认为 V7 底模不够可爱，下一轮应直接替换或重制底模及 skin，而不是继续给 V5/V6 路线做贴片式补丁。

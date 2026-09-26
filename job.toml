@@ -1,6 +1,6 @@
-job_id = "2026-09-25-v6-hamster-reborn-candidate"
-title = "V6 Hamster Reborn 成品候选"
-objective = "针对用户明确否定 V5 角色造型的问题，先通过静态角色 Art Gate，再用 20 帧完整角色 authored key poses + 帧间过渡重做动作；形成独立可试玩 V6 成品候选，正式入口保持不变等待用户验收。"
+job_id = "2026-09-26-v7-character-reboot"
+title = "V7 Character Reboot 成品"
+objective = "以角色模型为第一优先级，弃用 V6 令人不适的完整帧手绘造型，改用已有 CC0 41-joint skinned hamster GLB 作为真实体积角色底模；通过柔和材质、自然比例、骨骼动画、次级运动和直接互动完成可公开试玩的 V7 成品。"
 production_team = "production-team.toml"
 
 input_files = [
@@ -11,128 +11,86 @@ input_files = [
   ".ai/DECISIONS.md",
   ".ai/SESSION_LOG.md",
   "dist/engine.js",
-  "dist/v4-finished.html",
-  "dist/v4-finished.css",
-  "dist/v4-finished.js",
-  "research/V5角色动作与玩法规格.md",
-  "dist/v5-living-hamster.html",
-  "dist/v5-living-hamster.css",
-  "dist/v5-living-hamster.js",
-  "dist/v5-assets/hamster-rig-parts.webp",
-  "research/V6角色美术基准与关键帧方案.md",
-  "dist/v6-hamster-reborn.html",
-  "dist/v6-hamster-reborn.css",
-  "dist/v6-hamster-reborn.js",
-  "dist/v6-assets/hamster-v6-frames.webp",
-  "dist/assets/hamster-atlas.webp",
+  "dist/v2-assets-real/hamchan-cc0.glb",
+  "dist/v2-assets-real/CREDITS.txt",
   "dist/v4-assets/v4-room-bg.webp",
   "dist/v4-assets/v4-room-fg.webp",
-  "dist/v4-assets/v4-wheel-wood.webp"
+  "dist/v4-assets/v4-wheel-wood.webp",
+  "dist/vendor/three/three.module.js",
+  "dist/vendor/three/GLTFLoader.js",
+  "dist/v6-hamster-reborn.html"
 ]
 
 output_requirements = [
-  "提供独立 V6 成品候选入口，不修改正式 index/app/engine 业务代码",
-  "静态角色必须先满足仓鼠识别度：小圆耳、黑豆眼、短鼻吻、细胡须、短前爪、低重心、头身连续；禁止熊/猫/人偶面具感",
-  "V6 角色必须使用原创完整角色关键帧 atlas，不沿用 V5 可见分件拼接作为主角色方案",
-  "完整角色 atlas 至少包含 20 个 authored key poses，并通过 cross-fade / timing 形成连续动作",
-  "至少完成 walk、pet-react/pickup-drop、eat、run-wheel 四个高质量动作",
-  "每个主要动作至少具备 anticipation、清晰关键姿态、重心/动作弧线、secondary motion、settle",
-  "禁止把整张 hamster sprite 的平移/缩放/bob 当作主要动画；禁止无过渡 pose swap",
-  "脸颊只能作为连续面部毛区和体积变化，禁止两个独立圆形贴片；耳朵必须小而圆并后置",
-  "V6 主动画采用 frame animation / authored key pose 路线；只有 Canvas 2D 明确成为画质瓶颈时才重新评估 mesh warp/WebGL",
-  "抚摸要支持指针滑动方向/速度驱动不同反应，不再只靠按钮",
-  "捧起/放下必须出现受力压缩、四肢收拢、离地和落地回弹的连续表演",
-  "进食必须有发现/靠近/抓取/双爪送入口/脸颊鼓起/咀嚼/满足停顿",
-  "跑轮必须有上轮/找平衡/加速/稳定/疲劳减速/下轮/喘气",
-  "至少四种 distinct idle，并由 mood/energy/hunger 或最近互动影响选择",
-  "角色动作原型必须经过 Art Director + Character Animator + QA Motion Gate，通过后才可作为 V6 候选",
-  "移动端最低 30 FPS，目标 60 FPS；首屏继续保持 <=2.0 MB 硬上限，新增动作资源必须记录体量",
-  "正式 index/app/engine 保持不修改；v4-finished 保留为稳定对照组"
+  "新增独立 V7 入口 dist/v7-hamster-alive.html/css/js，不破坏旧版本",
+  "静态角色必须使用真实 skinned 3D hamster mesh，不再用圆片脸颊、可见分件拼装或纸片整图作为角色本体",
+  "角色渲染使用平滑纹理、柔和 PBR/灯光与抗锯齿，避免 V2 最近邻像素化导致的粗糙感",
+  "动画必须直接驱动骨骼并使用 AnimationMixer cross-fade；禁止把整体 bob 当作主要动作",
+  "至少完成 idle、walk、eat、pet-react、pickup/drop、run-wheel、sleep/wake",
+  "walk/eat/pickup/run 必须有重心变化、头部/躯干/四肢不同步和 settle",
+  "抚摸支持角色上的水平手势触发 nuzzle；长按再拖进入捧起，避免和普通抚摸冲突",
+  "复用正式 engine.js 玩法规则，但使用 V7 独立 localStorage key",
+  "保留 V4 暖阳木质房间的视觉方向作为背景，不回到 V2 低多边形家具主场景",
+  "桌面与 390px 手机均无横向溢出，移动端 >=30 FPS，目标 60 FPS",
+  "npm run check、npm test、git diff --check 和真实浏览器交互验证通过",
+  "完成后更新共享状态，commit/push master 并等待 GitHub Pages 成功"
 ]
 
-executors = ["chatgpt-agentdock", "codex"]
+executors = ["chatgpt-agentdock"]
 active_roles = [
   "art-director",
+  "visual-researcher",
   "character-artist",
   "animation-interaction",
   "character-animator",
   "technical-animator",
   "game-designer",
-  "vfx-camera-designer",
   "technical-artist",
   "gameplay-engineer",
   "qa-performance"
 ]
 
 [executor_assignments.chatgpt-agentdock]
-responsibility = "主导动作美术方向、角色资产规格、玩法动作规格、Character Animator pass、VFX/Camera pass、浏览器客观验证和独立 QA；不得把自己的实现直接自审为通过。"
-roles = ["art-director", "character-artist", "animation-interaction", "character-animator", "game-designer", "vfx-camera-designer", "qa-performance"]
+responsibility = "完整承担本轮 V7 研究、角色模型接入、骨骼动画、玩法桥接、浏览器 QA、Git 与 Pages 发布；实现与 QA 同一执行器的自审限制必须记录。"
+roles = ["art-director", "visual-researcher", "character-artist", "animation-interaction", "character-animator", "technical-animator", "game-designer", "technical-artist", "gameplay-engineer", "qa-performance"]
 
-[executor_assignments.codex]
-responsibility = "主导 Technical Animator、Technical Artist 和 Gameplay Engineer 工程实现：动作 rig/deformation、动画状态图、输入/状态机桥接、性能优化和自动测试。"
-roles = ["technical-animator", "technical-artist", "gameplay-engineer"]
-
-[role_assignments.art-director]
-task = "定义‘有肉感、非纸片’的角色运动视觉标准，并对动作实验室拥有退回权。"
-
-[role_assignments.character-artist]
-task = "重新设计角色可形变部件、表情和关键姿态资产；旧 hamster atlas 只能作为造型参考与临时对照，不能成为最终动作资产上限。"
-
-[role_assignments.animation-interaction]
-task = "作为动作/交互导演，定义主要动作的阶段、节奏、中断、反馈和直接触摸手感，并协调 Character Animator 与 Game Designer。"
-
-[role_assignments.character-animator]
-task = "为主要动作设计关键 pose、重心转移、弧线、squash/stretch、overlap/follow-through、secondary motion 和 settle；拒绝整体 sprite bob。"
-
-[role_assignments.technical-animator]
-task = "以完整角色 authored key pose + cross-fade 为主实现动画状态图；避免暴露分件接缝，并对 frame animation、必要的轻量形变与性能成本负责。"
-
-[role_assignments.game-designer]
-task = "把动作突破变成玩法突破：定义抚摸手势、捧起受力、进食阶段、跑轮阶段、动态 idle 与情绪反馈，不增加无意义按钮。"
-
-[role_assignments.vfx-camera-designer]
-task = "在角色本体动作成立后加入微镜头、局部粒子、聚焦和环境响应；不得用特效遮盖本体动作不足。"
-
-[role_assignments.technical-artist]
-task = "负责角色资产/渲染管线、体量、Canvas2D/WebGL 可行性与移动端性能，保证动作技术方案不会破坏 V4 美术方向。"
-
-[role_assignments.gameplay-engineer]
-task = "只有动作实验室通过 gate 后，才把新动画事件和直接互动接入 V4 候选与既有 HamsterGame；不先行大改稳定状态机。"
-
-[role_assignments.qa-performance]
-task = "独立验证动作是否仍像纸片、输入响应、中断/续接、四个原型动作完整度、FPS、体量和浏览器兼容；不得因为代码可运行就判通过。"
-
-[stage_gate.motion_prototype]
-required_roles = ["art-director", "character-animator", "qa-performance"]
-must_pass_before = "gameplay-integration"
+[stage_gate.character_art]
 criteria = [
-  "四个高质量原型动作可实际运行",
-  "主要动作不依赖 whole-body bob",
-  "角色可见局部形变与 secondary motion",
-  "至少一个直接手势互动可改变角色反应",
-  "动作中断与恢复不会瞬切穿帮",
-  "390px 移动端保持可操作且 >=30 FPS"
+  "静态角色第一眼明确是仓鼠而非熊/猫/人偶",
+  "不存在独立圆形脸颊贴片、机械关节或纸片轮廓",
+  "三维体积、短鼻吻、小耳、短前爪和低重心清晰",
+  "在手机尺寸仍能读出眼、耳、鼻吻和身体体积"
+]
+
+[stage_gate.motion]
+criteria = [
+  "核心动作实际驱动多个骨骼",
+  "动作有 anticipation/weight shift/secondary motion/settle",
+  "AnimationMixer cross-fade 无明显瞬切",
+  "直接手势至少改变 pet 与 pickup 两类反应",
+  "390px 可操作且 >=30 FPS"
 ]
 
 [temporary_constraints]
-modify_formal_gameplay_code = false
 modify_formal_entry = false
+modify_formal_engine = false
 modify_existing_v2 = false
 modify_existing_v3 = false
-commit = false
-push = false
+modify_existing_v4 = false
+modify_existing_v5 = false
+modify_existing_v6 = false
+commit = true
+push = true
+publish = true
 reset = false
 clean = false
 delete_files = false
-publish = false
 overwrite_existing_uncommitted_work = false
 
 [performance_budget]
-initial_transfer_target_kb = 1500
-initial_transfer_hard_cap_kb = 2000
 mobile_target_fps = 60
 mobile_minimum_fps = 30
-prototype_actions_required = 4
+v7_related_hard_cap_kb = 3200
 minimum_idle_variants = 4
 
 [lifecycle]

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5e8d0">
+  <title>团团小屋 · V7 Character Reboot</title>
+  <link rel="stylesheet" href="./v7-hamster-alive.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three/three.module.js"}}</script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">V7 · CHARACTER REBOOT</p>
+        <h1>团团的小屋</h1>
+        <p class="sub">先把仓鼠本体做好，再谈动画。真实 3D 骨骼模型 · 柔和渲染 · 直接触摸。</p>
+      </div>
+      <div class="meters" aria-label="状态">
+        <span>心情 <b id="mood">--</b></span>
+        <span>体力 <b id="energy">--</b></span>
+        <span>饱腹 <b id="hunger">--</b></span>
+      </div>
+    </header>
+
+    <section class="game-card">
+      <div class="scene-wrap" id="sceneWrap">
+        <img class="room-bg" src="./v4-assets/v4-room-bg.webp" alt="">
+        <canvas id="hamsterStage" aria-label="团团仓鼠角色"></canvas>
+        <img class="room-fg" src="./v4-assets/v4-room-fg.webp" alt="">
+        <img class="wheel" src="./v4-assets/v4-wheel-wood.webp" alt="木质滚轮">
+        <div class="contact-shadow" id="contactShadow"></div>
+        <div class="thought" id="thought" hidden></div>
+        <div class="load-screen" id="loadScreen">正在叫醒团团…</div>
+      </div>
+
+      <div class="status-strip">
+        <span class="dot"></span><strong id="modeText">准备中</strong>
+        <span id="hint">滑动摸摸它；长按再拖动可以抱起。</span>
+      </div>
+
+      <div class="action-rail" aria-label="互动动作">
+        <button data-action="feed"><span>🌻</span>喂食</button>
+        <button data-action="pet"><span>🤍</span>摸摸</button>
+        <button data-action="wheel"><span>🛞</span>跑轮</button>
+        <button data-action="sleep"><span>🌙</span>睡觉</button>
+        <button data-action="shape"><span>🐹</span>蜷一蜷</button>
+        <button data-action="stash"><span>🌰</span>藏瓜子</button>
+      </div>
+    </section>
+
+    <footer class="notes">
+      <span>V7 模型：CC0 skinned hamster · 41 joints</span>
+      <span>动作：AnimationMixer + bone clips + cross-fade</span>
+      <span id="fpsReadout">-- FPS</span>
+    </footer>
+  </main>
+
+  <script type="module" src="./v7-hamster-alive.js"></script>
+</body>
+</html>
