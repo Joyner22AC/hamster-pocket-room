@@ -1156,3 +1156,9 @@ V4 成品候选已技术完成，当前断点是用户直接试玩 `http://127.0
 - `git diff --check`：通过。
 - 正式 `dist/index.html` / `dist/app.js` / `dist/engine.js` / `.openai/hosting.json` 本轮不修改。
 - 同一 ChatGPT-AgentDock 执行器承担实现与 QA；已用自动化、截图与实际浏览器交互做交叉验证，但最终美术喜好仍由用户在线试玩确认。
+
+### GitHub Publish
+- V7 成品提交：`3ed9ebe190505604f58c4219a907e9fadf1b3ca2`（`Build V7 skinned hamster character reboot`）。
+- 首次 `git push` 遇到 GitHub HTTPS connection reset；未修改 Git 配置，改为单次 `git -c http.version=HTTP/1.1 push origin master` 后成功。
+- GitHub Pages workflow `36233159323` 对 V7 提交执行完成，结论 `success`。
+- 线上 V7：`https://joyner22ac.github.io/hamster-pocket-room/v7-hamster-alive.html`，发布后实测 HTTP 200。

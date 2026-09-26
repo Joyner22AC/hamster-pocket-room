@@ -48,7 +48,8 @@ V7 `Character Reboot` 已进入成品发布阶段。当前 `job.toml` 为 `2026-
 - 分支：`master`。
 - GitHub Pages 由 `.github/workflows/pages.yml` 自动部署 `dist/`。
 - 总入口：`https://joyner22ac.github.io/hamster-pocket-room/`。
-- V7 发布后固定试玩地址：`https://joyner22ac.github.io/hamster-pocket-room/v7-hamster-alive.html`。
+- V7 已发布，固定试玩地址：`https://joyner22ac.github.io/hamster-pocket-room/v7-hamster-alive.html`，实测 HTTP 200。
+- V7 发布提交：`3ed9ebe190505604f58c4219a907e9fadf1b3ca2`；对应 GitHub Pages workflow `36233159323` 已 `completed/success`。
 - OpenAI Sites 配置 `.openai/hosting.json` 继续保留，不作为本轮 V7 发布路径。
 
 ## Important Paths
@@ -71,10 +72,9 @@ V7 `Character Reboot` 已进入成品发布阶段。当前 `job.toml` 为 `2026-
 
 ## Next Actions
 
-1. 完成本轮 V7 commit / push，并等待 GitHub Pages workflow 成功。
-2. 实测线上 `v7-hamster-alive.html` 返回 200。
-3. 让用户直接在手机上试玩 V7，优先验收角色静态模型和 idle，再看 walk/eat/pet/pickup/run。
-4. 若 V7 方向得到认可，再讨论是否把 V7 迁为正式首页；在用户明确批准前继续保留旧正式入口。
+1. 让用户直接在手机上试玩已发布的 V7，优先验收角色静态模型和 idle，再看 walk/eat/pet/pickup/run。
+2. 若 V7 方向得到认可，再讨论是否把 V7 迁为正式首页；在用户明确批准前继续保留旧正式入口。
+3. 若用户仍否定角色模型，下一步直接替换/重制底模，不再对 V5/V6 路线做局部补丁。
 
 ## Resume From Here
 
