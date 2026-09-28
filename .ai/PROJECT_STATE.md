@@ -6,7 +6,7 @@
 
 ## Active Task
 
-V8 `Natural Hamster` 本地候选已完成，当前 `job.toml` 为 `2026-09-28-v8-natural-hamster`。本轮不扩玩法，只继续精修 V7 真实 3D 仓鼠底模：进一步降低重心、加宽躯干、改为更侧向 3/4 视角，降低眼睛/毛发塑料高光，并把 idle / walk / run 的前爪运动改为贴近胸前的小幅动物化动作，减少直立人偶感。
+V8 `Natural Hamster` 已完成并发布到 GitHub Pages，当前 `job.toml` 仍为 `2026-09-28-v8-natural-hamster`。本轮不扩玩法，只精修 V7 真实 3D 仓鼠底模：进一步降低重心、加宽躯干、改为更侧向 3/4 视角，降低眼睛/毛发塑料高光，并把 idle / walk / run 的前爪运动改为贴近胸前的小幅动物化动作，减少直立人偶感。下一步等待用户在线试玩后的审美反馈。
 
 ## Current Status
 
@@ -73,7 +73,9 @@ V8 `Natural Hamster` 本地候选已完成，当前 `job.toml` 为 `2026-09-28-v
 - 总入口：`https://joyner22ac.github.io/hamster-pocket-room/`。
 - V7 已发布，固定试玩地址：`https://joyner22ac.github.io/hamster-pocket-room/v7-hamster-alive.html`，实测 HTTP 200。
 - V7 发布提交：`3ed9ebe190505604f58c4219a907e9fadf1b3ca2`；对应 GitHub Pages workflow `36233159323` 已 `completed/success`。
-- OpenAI Sites 配置 `.openai/hosting.json` 继续保留，不作为本轮 V7 发布路径。
+- V8 已发布，固定试玩地址：`https://joyner22ac.github.io/hamster-pocket-room/v8-hamster-natural.html`，发布后实测 HTTP 200，页面已引用 `v8-hamster-natural.js` / `.css`。
+- V8 产品发布提交：`f6ddec36b81c1f6f1f01bf4e75765d701e1b1e95`；对应 GitHub Pages workflow `36403098151` 已 `completed/success`。
+- OpenAI Sites 配置 `.openai/hosting.json` 继续保留，本轮 V8 仍通过 GitHub Pages 发布。
 
 ## Important Paths
 
@@ -94,14 +96,14 @@ V8 `Natural Hamster` 本地候选已完成，当前 `job.toml` 为 `2026-09-28-v
 - 同一 ChatGPT-AgentDock 执行器承担了 V8 实现与 QA，因此客观自动化、浏览器验证和截图检查均已完成，但最终审美判断仍应由用户直接试玩决定。
 - V7 使用现有 CC0 模型，不宣称是最终商业级角色资产；如果用户仍觉得模型造型不够可爱，下一轮应替换/重制底模本身，而不是再回到 V5/V6 的贴片或整图动画路线。
 - 不删除 V2–V6；它们保留为技术和视觉历史对照。
-- V8 本轮没有 commit / push / publish 授权；当前修改只保留在本地工作树，不改变已发布 GitHub Pages。
+- 用户已在 2026-09-28 当前会话明确授权发布 V8；该授权已用于本次 commit/push/Pages 发布，不视为后续自动发布授权。
 
 ## Next Actions
 
-1. V8 已完成本地候选与 QA；等待用户是否明确授权 commit/push/publish，以便手机端通过 GitHub Pages 试玩。
-2. 若 V8 仍未达到角色审美目标，下一步直接替换/重制底模，而不是继续只调材质或整体比例。
-3. 在用户明确批准前继续保留 V7 已发布页面和旧正式首页不变。
+1. 让用户直接试玩已发布的 V8：`https://joyner22ac.github.io/hamster-pocket-room/v8-hamster-natural.html`，优先验收静态角色、idle、walk/run 与前爪自然度。
+2. 若 V8 方向得到认可，再讨论是否将 V8 迁为正式首页；在用户明确批准前继续保留旧正式入口不变。
+3. 若 V8 仍未达到角色审美目标，下一步直接替换/重制底模或 skin，而不是继续只调同一底模的材质和整体比例。
 
 ## Resume From Here
 
-下一位执行器必须按 `AGENTS.md` 完成 AgentDock 健康检查后，读取 `project.toml`、本文件、相关 `DECISIONS.md` / 最近 `SESSION_LOG.md`、Git branch/status/log/diff，再读取 `production-team.toml`、当前 `job.toml` 和 active agents。当前主线是 V8 Natural Hamster；本地 V8 已通过客观 QA，但尚未 commit/push/publish。不要覆盖 V8 未提交工作，也不要回退到 V5 visible-parts rig 或 V6 whole-frame hamster art。
+下一位执行器必须按 `AGENTS.md` 完成 AgentDock 健康检查后，读取 `project.toml`、本文件、相关 `DECISIONS.md` / 最近 `SESSION_LOG.md`、Git branch/status/log/diff，再读取 `production-team.toml`、当前 `job.toml` 和 active agents。当前主线是 V8 Natural Hamster；V8 已发布到 GitHub Pages，产品发布提交为 `f6ddec36b81c1f6f1f01bf4e75765d701e1b1e95`，线上固定入口为 `https://joyner22ac.github.io/hamster-pocket-room/v8-hamster-natural.html`。下一步等待用户审美反馈；不要回退到 V5 visible-parts rig 或 V6 whole-frame hamster art，也不要未经新的明确授权继续发布或迁移正式首页。

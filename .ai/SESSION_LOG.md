@@ -1206,3 +1206,22 @@ V4 成品候选已技术完成，当前断点是用户直接试玩 `http://127.0
 - 当前共享状态与真实磁盘/Git 现场一致，无需纠正 V8 任务方向。
 - 当前阻塞点不变：V8 已是本地候选，下一动作需要用户明确授权 commit/push/publish，或提供新的审美反馈后再进入底模替换/重制路线。
 - 本会话未 commit、未 push、未 publish、未 reset、未 clean、未 delete；`DECISIONS.md` 未新增设计决策。
+
+## 2026-09-28 — ChatGPT-AgentDock · V8 GitHub Pages 发布
+
+### Authorization / Preflight
+- 用户在当前会话明确回复“发布”，授权将当前 V8 候选 commit、push 并通过既有 GitHub Pages 发布；该授权仅用于本次发布。
+- 发布前重新运行 `npm run check`：63 个静态文件通过，Repository payload ≈6.85 MB；`npm test`：13/13 通过。
+- V8 新文件加入暂存后 `git diff --cached --check` 首次发现 HTML / JS 文件尾部各一个多余空行；仅删除这两个尾部空行后重新验证通过。
+- staged diff 执行明显 GitHub/OpenAI/Bearer secret 模式扫描，未发现可疑凭据。
+
+### Commit / Push / Pages
+- V8 产品发布提交：`f6ddec36b81c1f6f1f01bf4e75765d701e1b1e95`（`Publish V8 natural hamster candidate`）。
+- 使用 `git -c http.version=HTTP/1.1 push origin master` 成功推送；fetch 后确认本地 HEAD 与 `origin/master` 均为该提交。
+- GitHub Pages workflow `36403098151` 对该提交已 `completed/success`。
+- 线上固定试玩地址：`https://joyner22ac.github.io/hamster-pocket-room/v8-hamster-natural.html`；发布后实测 HTTP 200，并确认页面引用 `./v8-hamster-natural.js` 与 `./v8-hamster-natural.css`。
+
+### Handoff
+- 正式旧首页与 V7 页面未迁移、未覆盖；本次仅增加并发布独立 V8 路径。
+- 下一步等待用户在线试玩后的角色审美反馈；若认可再讨论正式首页迁移，若仍不认可则按既有决策进入底模/skin 替换或重制。
+- 发布后状态同步将单独提交到 master；除本次明确授权外，后续 commit/push/publish 仍需新的明确授权。
