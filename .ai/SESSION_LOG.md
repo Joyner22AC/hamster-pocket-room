@@ -1162,3 +1162,47 @@ V4 成品候选已技术完成，当前断点是用户直接试玩 `http://127.0
 - 首次 `git push` 遇到 GitHub HTTPS connection reset；未修改 Git 配置，改为单次 `git -c http.version=HTTP/1.1 push origin master` 后成功。
 - GitHub Pages workflow `36233159323` 对 V7 提交执行完成，结论 `success`。
 - 线上 V7：`https://joyner22ac.github.io/hamster-pocket-room/v7-hamster-alive.html`，发布后实测 HTTP 200。
+
+## 2026-09-28 — ChatGPT-AgentDock · V8 Natural Hamster 本地候选
+
+### 接管
+- AgentDock 0.8.3 / Windows amd64 真实调用成功；专用 `AgentDock-Test` 目录只读检查成功，`mcp-smoke.txt` 写入并读回精确 `smoke test`。
+- 按 AGENTS → project.toml → shared state → Git → production-team/job/roles 完成接管；接管时工作区 clean，HEAD `a129ac0`。
+
+### V8 精修
+- 新增 `dist/v8-hamster-natural.html` / `.css` / `.js` 和 `research/V8角色自然化精修.md`；V7 保持不改。
+- 角色继续使用 CC0 41-joint skinned hamster，但比例进一步压低/加宽，朝向更侧向，眼睛改深棕哑光，毛发提高 roughness 并略降曝光。
+- 重做 `breath/sniff/walk/run`：髋部和胸背更低、更前倾；idle 前爪收胸；walk/run 前爪只做小幅错相，避免人类式摆臂。
+- V8 独立存档 key：`hamster-pocket-room-v8-candidate-v1`。
+
+### Browser / QA
+- Chrome Headless + CDP：桌面 `modelReady=true`、41 bones、errors=[]；direct pet → nuzzle；long-press+drag → carried；drop、feed、wheel、四 idle 均通过。
+- 390×844：scrollWidth/bodyWidth=390，scene≈358×201，6 按钮完整在视口，约 60 FPS，errors=[]。
+- Art Gate 截图 `.local/v8-smoke/art-gate.png` 显示角色明显更侧向、更低重心，前爪收在胸前；QA 产物不入 Git。
+- `npm run check`：63 个静态文件通过，Repository ≈6.85 MB；`npm test` 13/13；`git diff --check` 通过；17 个 TOML 可解析。
+- 正式 index/app/engine/hosting 与 V7 三文件均零 diff。
+
+### Safety / Handoff
+- 本轮没有新的 commit / push / publish 授权，因此只保留本地候选；没有 reset/clean/delete。
+- 当前 `job.toml` 为 `2026-09-28-v8-natural-hamster`；下一步等待用户是否明确授权发布 V8，或继续审美反馈。
+- 同一执行器承担实现与 QA，已完成自动化与截图/浏览器复核，但最终美术判断仍由用户。
+
+## 2026-09-28 — ChatGPT-AgentDock · V8 接管复核
+
+### Health / Takeover
+- 按用户协议先执行 AgentDock 健康检查：AgentDock 0.8.3 / Windows amd64 响应正常；仅检查 `%USERPROFILE%\\Documents\\AgentDock-Test`，`mcp-smoke.txt` 写入 `smoke test` 后立即读回成功。
+- 依次读取 `AGENTS.md`、`project.toml`、`.ai/PROJECT_STATE.md`、V7/V8 相关 `DECISIONS.md`、最近 `SESSION_LOG.md`，再检查 Git branch/status/log/diff。
+- Git 现场为 `master`，HEAD 与 `origin/master` 均为 `a129ac0`；未提交内容与既有 V8 候选记录一致，没有发现额外来源不明修改。
+- 继续读取 `production-team.toml`、当前 `job.toml`、`executors/chatgpt-agentdock.toml` 与 7 个 active professional role 配置；确认本 job 禁止 commit / push / publish，并禁止修改正式入口、engine 与 V7。
+
+### Revalidation
+- 逐项检查 V8→V7 HTML/CSS/JS 差异，确认 V8 只修改独立入口、存档 key、镜头/比例/材质和 breath/sniff/walk/run 骨骼表现；正式入口和 V7 保持不动。
+- `dist/v8-hamster-natural.*`、V8 研究说明、CC0 GLB 与 `.local/v8-smoke/` 三张 QA 图片均存在；复核 `art-gate.png`。
+- 本会话重新运行 `npm run check`：63 个静态文件通过，Repository payload ≈6.85 MB；`npm test`：13/13；`git diff --check`：通过；17 个 TOML 全部可解析。
+- 正式 `dist/index.html` / `dist/app.js` / `dist/engine.js` / `.openai/hosting.json` 与 V7 三文件相对 HEAD 均零 diff。
+- 本会话没有重新执行 CDP 浏览器交互烟测，沿用上一轮已记录的 V8 真实浏览器 QA；没有修改 V8 运行时代码。
+
+### Result / Handoff
+- 当前共享状态与真实磁盘/Git 现场一致，无需纠正 V8 任务方向。
+- 当前阻塞点不变：V8 已是本地候选，下一动作需要用户明确授权 commit/push/publish，或提供新的审美反馈后再进入底模替换/重制路线。
+- 本会话未 commit、未 push、未 publish、未 reset、未 clean、未 delete；`DECISIONS.md` 未新增设计决策。

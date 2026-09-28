@@ -1,6 +1,6 @@
-job_id = "2026-09-26-v7-character-reboot"
-title = "V7 Character Reboot 成品"
-objective = "以角色模型为第一优先级，弃用 V6 令人不适的完整帧手绘造型，改用已有 CC0 41-joint skinned hamster GLB 作为真实体积角色底模；通过柔和材质、自然比例、骨骼动画、次级运动和直接互动完成可公开试玩的 V7 成品。"
+job_id = "2026-09-28-v8-natural-hamster"
+title = "V8 Natural Hamster 角色自然化精修"
+objective = "在 V7 已验证的真实 41-joint skinned hamster 基础上继续精修角色本体，优先消除直立人偶感、前爪外展和塑料感；通过更低重心比例、侧向 3/4 视角、哑光材质以及更动物化的骨骼动作完成独立 V8 候选。"
 production_team = "production-team.toml"
 
 input_files = [
@@ -11,63 +11,57 @@ input_files = [
   ".ai/DECISIONS.md",
   ".ai/SESSION_LOG.md",
   "dist/engine.js",
+  "dist/v7-hamster-alive.html",
+  "dist/v7-hamster-alive.css",
+  "dist/v7-hamster-alive.js",
   "dist/v2-assets-real/hamchan-cc0.glb",
   "dist/v2-assets-real/CREDITS.txt",
   "dist/v4-assets/v4-room-bg.webp",
   "dist/v4-assets/v4-room-fg.webp",
-  "dist/v4-assets/v4-wheel-wood.webp",
-  "dist/vendor/three/three.module.js",
-  "dist/vendor/three/GLTFLoader.js",
-  "dist/v6-hamster-reborn.html"
+  "dist/v4-assets/v4-wheel-wood.webp"
 ]
 
 output_requirements = [
-  "新增独立 V7 入口 dist/v7-hamster-alive.html/css/js，不破坏旧版本",
-  "静态角色必须使用真实 skinned 3D hamster mesh，不再用圆片脸颊、可见分件拼装或纸片整图作为角色本体",
-  "角色渲染使用平滑纹理、柔和 PBR/灯光与抗锯齿，避免 V2 最近邻像素化导致的粗糙感",
-  "动画必须直接驱动骨骼并使用 AnimationMixer cross-fade；禁止把整体 bob 当作主要动作",
-  "至少完成 idle、walk、eat、pet-react、pickup/drop、run-wheel、sleep/wake",
-  "walk/eat/pickup/run 必须有重心变化、头部/躯干/四肢不同步和 settle",
-  "抚摸支持角色上的水平手势触发 nuzzle；长按再拖进入捧起，避免和普通抚摸冲突",
-  "复用正式 engine.js 玩法规则，但使用 V7 独立 localStorage key",
-  "保留 V4 暖阳木质房间的视觉方向作为背景，不回到 V2 低多边形家具主场景",
-  "桌面与 390px 手机均无横向溢出，移动端 >=30 FPS，目标 60 FPS",
-  "npm run check、npm test、git diff --check 和真实浏览器交互验证通过",
-  "完成后更新共享状态，commit/push master 并等待 GitHub Pages 成功"
+  "新增独立 V8 入口 dist/v8-hamster-natural.html/css/js，保留 V7 作为对照",
+  "角色整体更低、更宽、更偏侧向 3/4，减少直立人偶感",
+  "眼睛改为深棕哑光，毛发降低塑料高光",
+  "idle 的前爪保持靠近胸前，不出现明显 T-pose/人类摆臂",
+  "walk/run 的前爪只做小幅动物化配合，不使用人类式大摆臂",
+  "保留 breath/sniff/look/groom 四 idle 与 walk/eat/pet/pickup/drop/run/sleep",
+  "继续复用未修改的 engine.js，V8 使用独立 localStorage key",
+  "桌面与 390px 手机真实浏览器验证无横向溢出、无运行时错误、>=30 FPS",
+  "npm run check、npm test、git diff --check 通过",
+  "只完成本地候选与共享状态，不 commit/push/publish，除非用户另行明确授权"
 ]
 
 executors = ["chatgpt-agentdock"]
 active_roles = [
   "art-director",
-  "visual-researcher",
   "character-artist",
   "animation-interaction",
   "character-animator",
   "technical-animator",
-  "game-designer",
   "technical-artist",
-  "gameplay-engineer",
   "qa-performance"
 ]
 
 [executor_assignments.chatgpt-agentdock]
-responsibility = "完整承担本轮 V7 研究、角色模型接入、骨骼动画、玩法桥接、浏览器 QA、Git 与 Pages 发布；实现与 QA 同一执行器的自审限制必须记录。"
-roles = ["art-director", "visual-researcher", "character-artist", "animation-interaction", "character-animator", "technical-animator", "game-designer", "technical-artist", "gameplay-engineer", "qa-performance"]
+responsibility = "完成 V8 角色自然化精修、真实浏览器 QA 和共享状态；同一执行器实现与 QA 的自审限制需记录。"
+roles = ["art-director", "character-artist", "animation-interaction", "character-animator", "technical-animator", "technical-artist", "qa-performance"]
 
 [stage_gate.character_art]
 criteria = [
-  "静态角色第一眼明确是仓鼠而非熊/猫/人偶",
-  "不存在独立圆形脸颊贴片、机械关节或纸片轮廓",
-  "三维体积、短鼻吻、小耳、短前爪和低重心清晰",
-  "在手机尺寸仍能读出眼、耳、鼻吻和身体体积"
+  "静态角色第一眼明确是仓鼠",
+  "重心低、躯干圆宽、侧向轮廓自然",
+  "前爪贴近胸前，不呈人类式横向伸展",
+  "眼睛与毛发材质不呈塑料玩偶感"
 ]
 
 [stage_gate.motion]
 criteria = [
-  "核心动作实际驱动多个骨骼",
-  "动作有 anticipation/weight shift/secondary motion/settle",
-  "AnimationMixer cross-fade 无明显瞬切",
-  "直接手势至少改变 pet 与 pickup 两类反应",
+  "idle / walk / run 的前爪运动幅度明显小于 V7",
+  "核心动作仍由真实骨骼驱动并 cross-fade",
+  "直接手势 pet 与 pickup 保持可用",
   "390px 可操作且 >=30 FPS"
 ]
 
@@ -79,9 +73,10 @@ modify_existing_v3 = false
 modify_existing_v4 = false
 modify_existing_v5 = false
 modify_existing_v6 = false
-commit = true
-push = true
-publish = true
+modify_existing_v7 = false
+commit = false
+push = false
+publish = false
 reset = false
 clean = false
 delete_files = false
@@ -90,7 +85,6 @@ overwrite_existing_uncommitted_work = false
 [performance_budget]
 mobile_target_fps = 60
 mobile_minimum_fps = 30
-v7_related_hard_cap_kb = 3200
 minimum_idle_variants = 4
 
 [lifecycle]

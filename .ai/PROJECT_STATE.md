@@ -6,12 +6,15 @@
 
 ## Active Task
 
-V7 `Character Reboot` 已进入成品发布阶段。当前 `job.toml` 为 `2026-09-26-v7-character-reboot`。
-
-用户明确反馈 V6 美术仍然“很惊悚”，并要求先解决角色模型。因此 V7 不继续修补 V5 的可见分件 rig，也不继续依赖 V6 的 20 帧整图角色，而是启用项目已有 CC0 `hamchan-cc0.glb`：真实 skinned 3D hamster mesh，1 skin / 41 joints；运行时使用 Three.js `AnimationMixer` 和程序化骨骼 clips。
+V8 `Natural Hamster` 本地候选已完成，当前 `job.toml` 为 `2026-09-28-v8-natural-hamster`。本轮不扩玩法，只继续精修 V7 真实 3D 仓鼠底模：进一步降低重心、加宽躯干、改为更侧向 3/4 视角，降低眼睛/毛发塑料高光，并把 idle / walk / run 的前爪运动改为贴近胸前的小幅动物化动作，减少直立人偶感。
 
 ## Current Status
 
+- V8 独立入口：`dist/v8-hamster-natural.html`；代码/样式：`dist/v8-hamster-natural.js`、`dist/v8-hamster-natural.css`。
+- V8 继续使用同一 CC0 41-joint skinned hamster，但角色比例由 V7 的 `1.12×0.88×1.06` 进一步调整为约 `1.16×0.82×1.08`，并把朝向从约 `-0.92 rad` 改为 `-1.02 rad`，降低直立感。
+- V8 眼睛改为深棕哑光，眼材质 roughness 提高；毛发表面 roughness 提高并略降曝光，减少塑料玩偶感。
+- V8 `breath/sniff/walk/run` 重做前爪轨迹：idle 前爪收在胸前，walk/run 仅小幅错相，不再使用人类式大摆臂；髋部/胸背增加轻微前倾和更低重心。
+- V8 独立存档 key：`hamster-pocket-room-v8-candidate-v1`；V7 与正式入口均保持零 diff。
 - V7 独立入口：`dist/v7-hamster-alive.html`。
 - V7 代码/样式：`dist/v7-hamster-alive.js`、`dist/v7-hamster-alive.css`。
 - 主角色：`dist/v2-assets-real/hamchan-cc0.glb`，来源和 CC0 许可见 `dist/v2-assets-real/CREDITS.txt`。
@@ -25,6 +28,26 @@ V7 `Character Reboot` 已进入成品发布阶段。当前 `job.toml` 为 `2026-
 - 参考拆解与 V7 Motion Bible：`research/V7角色模型与动画参考拆解.md`。
 
 ## Validation
+
+2026-09-28 当前 ChatGPT-AgentDock 会话接管复核：
+
+- AgentDock 0.8.3 / Windows amd64 真实调用成功；专用 `AgentDock-Test` 目录只读检查、`mcp-smoke.txt` 写入与读回均成功。
+- Git 现场：`master`，HEAD / `origin/master` 均为 `a129ac0`；未提交内容只包含既有 V8 候选、相关 QA 配置与共享状态修改，没有发现额外来源不明改动。
+- 重新核对 V8→V7 diff、V8 研究说明、当前 job / production team / active roles；正式 `index/app/engine/hosting` 与 V7 三文件相对 HEAD 均为零 diff。
+- 本会话重新运行 `npm run check`：63 个静态文件通过，Repository payload 约 6.85 MB；`npm test`：13/13；`git diff --check`：通过；17 个 TOML 全部可解析。
+- 复核 `.local/v8-smoke/art-gate.png`，截图文件与桌面/手机 QA 产物均存在；本会话未重新执行浏览器交互烟测，因此下方原 V8 浏览器验收记录仍作为最近一次真实交互验证。
+- 本会话未修改 V8 运行时代码，未 commit / push / publish / reset / clean / delete。
+
+2026-09-28 V8 本地真实浏览器验收：
+
+- Chrome Headless + CDP，桌面 1280×900：`modelReady=true`、`bones=41`、`errors=[]`。
+- direct pet：水平 stroke 后 `lastGesture=nuzzle` 且 pet count 增加；长按约 390ms + drag 进入 `mode=carried`，release 后退出 carried。
+- feed 进入 `eating`；wheel approach 后进入 `running` 并增加 run count；四 idle `breath/sniff/look/groom` 均可实际选择。
+- 桌面和 390×844 手机均观测约 60 FPS，最低观测 60 FPS；390px 下 `scrollWidth=bodyScrollWidth=390`，scene 约 358×201，6 个按钮均完整位于视口。
+- V8 静态 Art Gate 截图：`.local/v8-smoke/art-gate.png`；桌面/手机交互截图：`.local/v8-smoke/desktop.png` / `mobile.png`，均不入 Git。
+- `npm run check`：JavaScript syntax + 63 个静态文件通过，Repository payload 约 6.85 MB。
+- `npm test`：13/13 通过；`git diff --check` 通过；17 个 TOML 均可解析。
+- 正式 `dist/index.html` / `dist/app.js` / `dist/engine.js` / `.openai/hosting.json` 与 V7 `dist/v7-hamster-alive.*` 均零 diff。
 
 2026-09-26 V7 本地真实浏览器验收：
 
@@ -59,23 +82,26 @@ V7 `Character Reboot` 已进入成品发布阶段。当前 `job.toml` 为 `2026-
 - V5 对照：`dist/v5-living-hamster.*`、`dist/v5-assets/`。
 - V6 对照：`dist/v6-hamster-reborn.*`、`dist/v6-assets/`。
 - V7 当前：`dist/v7-hamster-alive.html`、`.css`、`.js`。
+- V8 当前：`dist/v8-hamster-natural.html`、`.css`、`.js`。
 - V7 角色模型：`dist/v2-assets-real/hamchan-cc0.glb`。
 - V7 研究：`research/V7角色模型与动画参考拆解.md`。
+- V8 研究：`research/V8角色自然化精修.md`。
 - QA：`scripts/check.mjs`、`tests/engine.test.mjs`。
 - 协作配置：`project.toml`、`production-team.toml`、`job.toml`、`executors/*.toml`、`agents/*.toml`。
 
 ## Known Boundaries
 
-- 同一 ChatGPT-AgentDock 执行器承担了本轮实现与 QA，因此客观自动化、浏览器验证和截图检查均已完成，但最终审美判断仍应由用户直接试玩决定。
+- 同一 ChatGPT-AgentDock 执行器承担了 V8 实现与 QA，因此客观自动化、浏览器验证和截图检查均已完成，但最终审美判断仍应由用户直接试玩决定。
 - V7 使用现有 CC0 模型，不宣称是最终商业级角色资产；如果用户仍觉得模型造型不够可爱，下一轮应替换/重制底模本身，而不是再回到 V5/V6 的贴片或整图动画路线。
 - 不删除 V2–V6；它们保留为技术和视觉历史对照。
+- V8 本轮没有 commit / push / publish 授权；当前修改只保留在本地工作树，不改变已发布 GitHub Pages。
 
 ## Next Actions
 
-1. 让用户直接在手机上试玩已发布的 V7，优先验收角色静态模型和 idle，再看 walk/eat/pet/pickup/run。
-2. 若 V7 方向得到认可，再讨论是否把 V7 迁为正式首页；在用户明确批准前继续保留旧正式入口。
-3. 若用户仍否定角色模型，下一步直接替换/重制底模，不再对 V5/V6 路线做局部补丁。
+1. V8 已完成本地候选与 QA；等待用户是否明确授权 commit/push/publish，以便手机端通过 GitHub Pages 试玩。
+2. 若 V8 仍未达到角色审美目标，下一步直接替换/重制底模，而不是继续只调材质或整体比例。
+3. 在用户明确批准前继续保留 V7 已发布页面和旧正式首页不变。
 
 ## Resume From Here
 
-下一位执行器必须按 `AGENTS.md` 完成 AgentDock 健康检查后，读取 `project.toml`、本文件、相关 `DECISIONS.md` / 最近 `SESSION_LOG.md`、Git branch/status/log/diff，再读取 `production-team.toml`、当前 `job.toml` 和 active agents。当前主线是 V7 Character Reboot；不要回退到 V5 visible-parts rig 或 V6 whole-frame hamster art。若继续角色美术，优先从真实底模、比例、姿态、材质和骨骼动画入手。
+下一位执行器必须按 `AGENTS.md` 完成 AgentDock 健康检查后，读取 `project.toml`、本文件、相关 `DECISIONS.md` / 最近 `SESSION_LOG.md`、Git branch/status/log/diff，再读取 `production-team.toml`、当前 `job.toml` 和 active agents。当前主线是 V8 Natural Hamster；本地 V8 已通过客观 QA，但尚未 commit/push/publish。不要覆盖 V8 未提交工作，也不要回退到 V5 visible-parts rig 或 V6 whole-frame hamster art。
